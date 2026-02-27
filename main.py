@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import json
+import os
 
 app = Flask(__name__)
 
@@ -23,25 +24,34 @@ print("Bible Loaded:", len(bible), "verses")
 
 @app.route("/")
 def home():
-    return "Bible AI Backend Running"
+    return jsonify({"status": "Bible AI Backend Running"})
 
 
 @app.route("/ask", methods=["POST"])
 def ask():
-    data = request.json
-    question = data.get("question", "").lower()
+    try:
+        data = request.json
+        question = data.get("question", "").lower()
 
-    results = []
+        if not question:
+            return jsonify({"error": "No question provided"}), 400
 
-    for verse in bible:
-        if question in verse["text"].lower():
-            results.append(verse)
+        results = []
 
-        if len(results) == 5:
-            break
+        for verse in bible:
+            if question in verse["text"].lower():
+                results.append(verse)
 
-    return jsonify(results)
+            if len(results) == 5:
+                break
+
+        return jsonify(results)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
+# 🔥 IMPORTANT: Railway Dynamic Port
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
