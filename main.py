@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import json
-import os
 
 app = Flask(__name__)
 
@@ -9,15 +8,13 @@ print("Loading Bible...")
 with open("kjv.json", "r", encoding="utf-8") as f:
     bible_data = json.load(f)
 
-# Flatten verses
+# ✅ Handle dictionary-style JSON
 bible = []
-for book in bible_data:
-    for chapter in book["chapters"]:
-        for verse in chapter:
-            bible.append({
-                "book": book["name"],
-                "text": verse
-            })
+for reference, text in bible_data.items():
+    bible.append({
+        "reference": reference,
+        "text": text
+    })
 
 print("Bible Loaded:", len(bible), "verses")
 
@@ -49,9 +46,3 @@ def ask():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-# 🔥 IMPORTANT: Railway Dynamic Port
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
