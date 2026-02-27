@@ -1,5 +1,2 @@
 flask
 gunicorn
-sentence-transformers
-faiss-cpu
-numpy
