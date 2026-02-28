@@ -39,20 +39,34 @@ def ask():
         if not question:
             return jsonify({"error": "No question provided"}), 400
 
-        results = []
+        # Remove short/common words (like is, who, the)
+        words = [w for w in question.split() if len(w) > 3]
 
-        words = question.split()
+        results = []
 
         for verse in bible:
             verse_text = verse["text"].lower()
 
-            if any(word in verse_text for word in words):
-                results.append(verse)
+            # Count how many meaningful words match
+            match_count = sum(1 for word in words if word in verse_text)
 
-            if len(results) == 5:
-                break
+            if match_count >= 1:  # at least 1 meaningful word match
+                results.append({
+                    "reference": verse["reference"],
+                    "text": verse["text"],
+                    "score": match_count
+                })
 
-        return jsonify(results)
+        # Sort by highest score first
+        results = sorted(results, key=lambda x: x["score"], reverse=True)
+
+        # Remove score before sending to user
+        final_results = [
+            {"reference": r["reference"], "text": r["text"]}
+            for r in results[:10]
+        ]
+
+        return jsonify(final_results)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
