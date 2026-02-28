@@ -8,7 +8,7 @@ print("Loading Bible...")
 with open("kjv.json", "r", encoding="utf-8") as f:
     bible_data = json.load(f)
 
-# Handle dictionary-style JSON
+# Convert dictionary-style JSON to list
 bible = []
 for reference, text in bible_data.items():
     bible.append({
@@ -24,25 +24,29 @@ def home():
     return jsonify({"status": "Bible AI Backend Running"})
 
 
-# ✅ NOW SUPPORTS BOTH GET AND POST
 @app.route("/ask", methods=["GET", "POST"])
 def ask():
     try:
-        # If GET (from browser)
+        # Get question safely
         if request.method == "GET":
-            question = request.args.get("question", "").lower()
-        # If POST (from Android app)
+            question = request.args.get("question", "")
         else:
-            data = request.get_json()
-            question = data.get("question", "").lower() if data else ""
+            data = request.get_json(silent=True)
+            question = data.get("question", "") if data else ""
+
+        question = question.lower().strip()
 
         if not question:
             return jsonify({"error": "No question provided"}), 400
 
         results = []
 
+        words = question.split()
+
         for verse in bible:
-            if question in verse["text"].lower():
+            verse_text = verse["text"].lower()
+
+            if any(word in verse_text for word in words):
                 results.append(verse)
 
             if len(results) == 5:
