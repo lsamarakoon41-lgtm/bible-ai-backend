@@ -2,11 +2,23 @@ from flask import Flask, request, jsonify
 import json
 import re
 import os
-from collections import defaultdict
+import time
+import logging
+from collections import defaultdict, Counter
+from functools import lru_cache
 
 app = Flask(__name__)
 
-print("Loading Bible...")
+# -----------------------------
+# Logging Setup
+# -----------------------------
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+logging.info("Starting Bible AI Backend...")
 
 # -----------------------------
 # Load Bible
@@ -16,14 +28,12 @@ with open("kjv.json", "r", encoding="utf-8") as f:
     bible_data = json.load(f)
 
 bible = [{"reference": ref, "text": text} for ref, text in bible_data.items()]
-
-# Fast lookup dictionary (important upgrade)
 bible_lookup = {v["reference"].lower(): v for v in bible}
 
-print("Bible Loaded:", len(bible), "verses")
+logging.info(f"Bible Loaded: {len(bible)} verses")
 
 # -----------------------------
-# Build Structure (Book → Chapter → Verses)
+# Structure: Book → Chapter → Verses
 # -----------------------------
 
 structure = defaultdict(lambda: defaultdict(list))
@@ -37,63 +47,87 @@ for verse in bible:
         chapter_verse = parts[1]
 
         if ":" in chapter_verse:
-            chapter, verse_num = chapter_verse.split(":")
+            chapter, _ = chapter_verse.split(":")
             structure[book][chapter].append(verse)
 
 books_list = list(structure.keys())
 
 # -----------------------------
-# 🧠 Brain Folder System
+# 🧠 Brain System (Auto Refresh + Smart Ranking)
 # -----------------------------
 
 BRAIN_FOLDER = "brain"
+brain_knowledge = []
+brain_last_loaded = 0
+BRAIN_REFRESH_INTERVAL = 30  # seconds
+
 
 def load_brain():
-    brain_data = []
+    global brain_last_loaded
+    knowledge = []
 
     if not os.path.exists(BRAIN_FOLDER):
         os.makedirs(BRAIN_FOLDER)
 
     for filename in os.listdir(BRAIN_FOLDER):
-        if filename.endswith(".txt") or filename.endswith(".md"):
+        if filename.endswith((".txt", ".md")):
             filepath = os.path.join(BRAIN_FOLDER, filename)
 
             with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()
+                paragraphs = [p.strip() for p in content.split("\n") if p.strip()]
 
-                brain_data.append({
-                    "source": filename,
-                    "content": content
-                })
+                for para in paragraphs:
+                    knowledge.append({
+                        "source": filename,
+                        "content": para,
+                        "content_lower": para.lower(),
+                        "word_freq": Counter(re.findall(r"\b[a-zA-Z]+\b", para.lower()))
+                    })
 
-    print("Brain Loaded:", len(brain_data), "files")
-    return brain_data
+    brain_last_loaded = time.time()
+    logging.info(f"Brain Reloaded: {len(knowledge)} segments")
+    return knowledge
 
+
+def auto_refresh_brain():
+    global brain_knowledge
+    if time.time() - brain_last_loaded > BRAIN_REFRESH_INTERVAL:
+        brain_knowledge = load_brain()
+
+
+# Initial load
 brain_knowledge = load_brain()
 
 
-def search_brain(question, limit=3):
-    words = [w for w in re.findall(r"\b\w+\b", question.lower()) if len(w) > 4]
+@lru_cache(maxsize=200)
+def search_brain_cached(question):
+    auto_refresh_brain()
+
+    question_words = re.findall(r"\b[a-zA-Z]+\b", question.lower())
+    question_freq = Counter([w for w in question_words if len(w) > 4])
 
     results = []
 
     for item in brain_knowledge:
-        text = item["content"].lower()
-        score = sum(1 for word in words if word in text)
+        score = 0
+
+        for word, q_count in question_freq.items():
+            score += item["word_freq"].get(word, 0) * q_count
 
         if score > 0:
             results.append({
                 "source": item["source"],
-                "content": item["content"][:800],
+                "content": item["content"],
                 "score": score
             })
 
     results.sort(key=lambda x: x["score"], reverse=True)
+    return results[:5]
 
-    return results[:limit]
 
 # -----------------------------
-# 📖 Scripture Interprets Scripture
+# Scripture Interprets Scripture
 # -----------------------------
 
 def scripture_explains_scripture(main_verse, limit=5):
@@ -105,35 +139,33 @@ def scripture_explains_scripture(main_verse, limit=5):
         "said","saying","there","which","when","what","who"
     }
 
-    main_text = main_verse["text"].lower()
-
     words = [
-        w for w in re.findall(r"\b[a-zA-Z]+\b", main_text)
+        w for w in re.findall(r"\b[a-zA-Z]+\b", main_verse["text"].lower())
         if len(w) > 4 and w not in stopwords
     ]
 
-    scored = []
+    results = []
 
     for verse in bible:
         if verse["reference"] == main_verse["reference"]:
             continue
 
-        verse_text = verse["text"].lower()
-        score = sum(1 for word in words if word in verse_text)
+        score = sum(1 for word in words if word in verse["text"].lower())
 
         if score > 0:
-            scored.append({
+            results.append({
                 "reference": verse["reference"],
                 "text": verse["text"],
                 "score": score
             })
 
-    scored.sort(key=lambda x: x["score"], reverse=True)
+    results.sort(key=lambda x: x["score"], reverse=True)
 
     return [
         {"reference": r["reference"], "text": r["text"]}
-        for r in scored[:limit]
+        for r in results[:limit]
     ]
+
 
 # -----------------------------
 # Routes
@@ -158,11 +190,11 @@ def ask():
         if not question:
             return jsonify({"error": "No question provided"}), 400
 
+        logging.info(f"Question received: {question}")
+
         question_lower = question.lower()
 
-        # ---------------------------------------
-        # 1️⃣ Direct Reference (Improved)
-        # ---------------------------------------
+        # 1️⃣ Direct Verse Reference
         ref_pattern = r"([1-3]?\s?[a-zA-Z\s]+?\s\d+:\d+)"
         ref_match = re.findall(ref_pattern, question)
 
@@ -179,40 +211,8 @@ def ask():
                     "scripture_explanation": explanation
                 })
 
-        # ---------------------------------------
-        # 2️⃣ Chapter Request
-        # ---------------------------------------
-        chapter_pattern = r"([1-3]?\s?[a-zA-Z\s]+?)\s(?:chapter\s)?(\d+)"
-        chapter_match = re.findall(chapter_pattern, question_lower)
-
-        if chapter_match:
-            book_input, chapter = chapter_match[0]
-            book_input = book_input.strip().title()
-
-            for b in books_list:
-                if b.lower() == book_input.lower():
-                    return jsonify({
-                        "type": "chapter",
-                        "book": b,
-                        "chapter": chapter,
-                        "verses": structure[b].get(chapter, [])
-                    })
-
-        # ---------------------------------------
-        # 3️⃣ Chapter Count
-        # ---------------------------------------
-        if "how many chapters" in question_lower:
-            for book in books_list:
-                if book.lower() in question_lower:
-                    return jsonify({
-                        "type": "chapter_count",
-                        "answer": f"{book} has {len(structure[book])} chapters."
-                    })
-
-        # ---------------------------------------
-        # 4️⃣ Brain Search (before fallback)
-        # ---------------------------------------
-        brain_results = search_brain(question)
+        # 2️⃣ Brain Search (Smart + Cached)
+        brain_results = search_brain_cached(question)
 
         if brain_results:
             return jsonify({
@@ -220,16 +220,13 @@ def ask():
                 "results": brain_results
             })
 
-        # ---------------------------------------
-        # 5️⃣ Bible Keyword Search
-        # ---------------------------------------
-        words = [w for w in re.findall(r"\b\w+\b", question_lower) if len(w) > 3]
+        # 3️⃣ Bible Keyword Search
+        words = [w for w in re.findall(r"\b[a-zA-Z]+\b", question_lower) if len(w) > 3]
 
         results = []
 
         for verse in bible:
-            verse_text = verse["text"].lower()
-            score = sum(1 for word in words if word in verse_text)
+            score = sum(1 for word in words if word in verse["text"].lower())
 
             if score > 0:
                 results.append({
@@ -249,6 +246,7 @@ def ask():
         })
 
     except Exception as e:
+        logging.error(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 
