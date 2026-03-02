@@ -1,5 +1,4 @@
 flask
 gunicorn
-sentence-transformers
 numpy
 scikit-learn

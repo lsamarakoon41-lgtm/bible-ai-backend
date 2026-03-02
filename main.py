@@ -4,7 +4,7 @@ import re
 import os
 import logging
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ app = Flask(__name__)
 # -------------------------------------------------
 
 logging.basicConfig(level=logging.INFO)
-logging.info("Starting Bible AI - Production Mode")
+logging.info("Starting Bible AI - Lightweight Production Mode")
 
 # -------------------------------------------------
 # LOAD BIBLE
@@ -38,9 +38,6 @@ logging.info(f"Bible Loaded: {len(bible_list)} verses")
 
 KNOWLEDGE_FOLDER = "knowledge"
 
-if not os.path.exists(KNOWLEDGE_FOLDER):
-    os.makedirs(KNOWLEDGE_FOLDER)
-
 def load_json(filename):
     path = os.path.join(KNOWLEDGE_FOLDER, filename)
     if os.path.exists(path):
@@ -56,107 +53,63 @@ historical_context_data = load_json("historical_context.json")
 logging.info("Knowledge Loaded")
 
 # -------------------------------------------------
-# LOAD EMBEDDING MODEL
-# -------------------------------------------------
-
-logging.info("Loading Embedding Model...")
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-logging.info("Embedding Model Loaded")
-
-# -------------------------------------------------
-# BUILD OR LOAD SEMANTIC MEMORY (PERSISTENT)
+# BUILD LIGHTWEIGHT SEMANTIC MEMORY (TF-IDF)
 # -------------------------------------------------
 
 SEMANTIC_DATA = []
-SEMANTIC_EMBEDDINGS = None
+TEXT_CORPUS = []
 
-EMBEDDINGS_PATH = os.path.join(KNOWLEDGE_FOLDER, "semantic_embeddings.npy")
-DATA_PATH = os.path.join(KNOWLEDGE_FOLDER, "semantic_data.json")
+secondary = jesus_life_data + early_church_data + historical_context_data
 
-def build_semantic_memory():
-    global SEMANTIC_DATA, SEMANTIC_EMBEDDINGS
-
-    # Load if exists
-    if os.path.exists(EMBEDDINGS_PATH) and os.path.exists(DATA_PATH):
-        logging.info("Loading Saved Semantic Memory...")
-
-        with open(DATA_PATH, "r", encoding="utf-8") as f:
-            SEMANTIC_DATA = json.load(f)
-
-        SEMANTIC_EMBEDDINGS = np.load(EMBEDDINGS_PATH)
-
-        logging.info(f"Loaded {len(SEMANTIC_DATA)} semantic items from disk")
-        return
-
-    # Build first time
-    logging.info("Building Semantic Memory First Time...")
-
-    combined = []
-
-    secondary = jesus_life_data + early_church_data + historical_context_data
-
-    for item in secondary:
-        text = item.get("content") or item.get("text") or item.get("title")
-        if text:
-            combined.append({
-                "type": "knowledge",
-                "data": item,
-                "text": text
-            })
-
-    for entry in doctrine_core:
-        combined.append({
-            "type": "doctrine",
-            "data": entry,
-            "text": (
-                entry.get("title", "") + " " +
-                entry.get("explanation", "") + " " +
-                entry.get("logical_reasoning", "")
-            )
+for item in secondary:
+    text = item.get("content") or item.get("text") or item.get("title")
+    if text:
+        SEMANTIC_DATA.append({
+            "type": "knowledge",
+            "data": item,
+            "text": text
         })
+        TEXT_CORPUS.append(text)
 
-    SEMANTIC_DATA = combined
+for entry in doctrine_core:
+    combined_text = (
+        entry.get("title", "") + " " +
+        entry.get("explanation", "") + " " +
+        entry.get("logical_reasoning", "")
+    )
 
-    if SEMANTIC_DATA:
-        texts = [item["text"] for item in SEMANTIC_DATA]
+    SEMANTIC_DATA.append({
+        "type": "doctrine",
+        "data": entry,
+        "text": combined_text
+    })
+    TEXT_CORPUS.append(combined_text)
 
-        SEMANTIC_EMBEDDINGS = embedding_model.encode(
-            texts,
-            convert_to_numpy=True
-        )
+if TEXT_CORPUS:
+    vectorizer = TfidfVectorizer(stop_words="english")
+    DOC_VECTORS = vectorizer.fit_transform(TEXT_CORPUS)
+else:
+    vectorizer = None
+    DOC_VECTORS = None
 
-        # Save to disk
-        np.save(EMBEDDINGS_PATH, SEMANTIC_EMBEDDINGS)
-
-        with open(DATA_PATH, "w", encoding="utf-8") as f:
-            json.dump(SEMANTIC_DATA, f)
-
-        logging.info(f"Built and Saved {len(SEMANTIC_DATA)} semantic items")
-    else:
-        SEMANTIC_EMBEDDINGS = None
-        logging.warning("No Semantic Data Found")
-
-build_semantic_memory()
+logging.info(f"Semantic Memory Built: {len(SEMANTIC_DATA)} items")
 
 # -------------------------------------------------
 # SEMANTIC SEARCH
 # -------------------------------------------------
 
 def semantic_search(question, top_k=5):
-    if SEMANTIC_EMBEDDINGS is None or len(SEMANTIC_DATA) == 0:
+    if not vectorizer or DOC_VECTORS is None:
         return []
 
-    query_embedding = embedding_model.encode(
-        [question],
-        convert_to_numpy=True
-    )
+    query_vector = vectorizer.transform([question])
+    similarities = cosine_similarity(query_vector, DOC_VECTORS)[0]
 
-    similarities = cosine_similarity(query_embedding, SEMANTIC_EMBEDDINGS)[0]
     top_indices = np.argsort(similarities)[::-1][:top_k]
 
     results = []
     for idx in top_indices:
-        if similarities[idx] > 0.30:
+        if similarities[idx] > 0.15:
             results.append({
                 "type": SEMANTIC_DATA[idx]["type"],
                 "data": SEMANTIC_DATA[idx]["data"],
@@ -200,13 +153,11 @@ def cross_reference(main_verse, limit=5):
 
 @app.route("/")
 def home():
-    return jsonify({"status": "Bible AI Running - Production Mode"})
+    return jsonify({"status": "Bible AI Running - Lightweight Mode"})
 
 @app.route("/ask", methods=["GET", "POST"])
 def ask():
     try:
-        question = ""
-
         if request.method == "GET":
             question = request.args.get("question", "")
         else:
@@ -234,7 +185,7 @@ def ask():
                     "cross_references": cross_reference(verse)
                 })
 
-        # 2️⃣ Semantic Search
+        # 2️⃣ Doctrine Priority
         semantic_results = semantic_search(question)
 
         doctrine_hits = [r for r in semantic_results if r["type"] == "doctrine"]
