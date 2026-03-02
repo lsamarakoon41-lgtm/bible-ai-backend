@@ -1,0 +1,209 @@
+[
+  {
+    "title": "What is the Bible and Its History",
+    "keywords": [
+      "what is the bible","bible history","old testament",
+      "new testament","canon","scripture formation",
+      "septuagint","dead sea scrolls"
+    ],
+    "summary": "The Bible is the sacred scripture of Christianity composed of the Old and New Testaments. It was written over centuries and recognized as canon by the early Church.",
+    "scripture_references": ["2 Timothy 3:16", "2 Peter 1:21"],
+    "historical_context": "The Old Testament was mainly written in Hebrew; the New Testament in Greek. The canon was formally recognized in the early centuries of Christianity.",
+    "major_points": [
+      "Old Testament: Law, Prophets, Writings",
+      "New Testament: Gospels, Acts, Epistles, Revelation",
+      "Septuagint Greek translation",
+      "Dead Sea Scrolls discovery",
+      "Canon recognition process",
+      "Doctrine of divine inspiration"
+    ]
+  },
+  {
+    "title": "Identity of Jesus Christ",
+    "keywords": [
+      "messiah","christ","son of god","son of man",
+      "logos","word made flesh","lamb of god",
+      "seed of david","king of kings"
+    ],
+    "summary": "Jesus Christ is the promised Messiah, the Son of God, and the eternal Word who became flesh.",
+    "scripture_references": ["John 1", "Matthew 16:16", "Isaiah 53"],
+    "historical_context": "Jewish expectation centered on a coming Messiah from David’s lineage.",
+    "major_points": [
+      "Fulfillment of prophecy",
+      "Divine and human nature",
+      "Descendant of David",
+      "Role as Redeemer"
+    ]
+  },
+  {
+    "title": "Birth and Early Life of Jesus",
+    "keywords": [
+      "genealogy","virgin birth","bethlehem",
+      "herod the great","flight to egypt","nazareth"
+    ],
+    "summary": "Jesus was born in Bethlehem of the Virgin Mary during Herod’s reign.",
+    "scripture_references": ["Matthew 1-2", "Luke 1-2", "Micah 5:2"],
+    "historical_context": "Judea was under Roman rule governed by Herod the Great.",
+    "major_points": [
+      "Genealogies in Matthew and Luke",
+      "Virgin birth fulfillment",
+      "Visit of shepherds and Magi",
+      "Flight to Egypt",
+      "Upbringing in Nazareth"
+    ]
+  },
+  {
+    "title": "Mary the Mother of Jesus",
+    "keywords": [
+      "mary mother of jesus","virgin mary","annunciation"
+    ],
+    "summary": "Mary was chosen to bear Jesus through the Holy Spirit.",
+    "scripture_references": ["Luke 1", "Matthew 1", "John 19:25"],
+    "historical_context": "Mary lived in Nazareth under Roman occupation.",
+    "major_points": [
+      "Angel Gabriel’s announcement",
+      "Virgin conception",
+      "Presence at crucifixion"
+    ]
+  },
+  {
+    "title": "Joseph the Earthly Father of Jesus",
+    "keywords": [
+      "joseph husband of mary","carpenter","line of david"
+    ],
+    "summary": "Joseph was a descendant of David and worked as a carpenter.",
+    "scripture_references": ["Matthew 1-2", "Luke 2"],
+    "historical_context": "Joseph lived in Nazareth.",
+    "major_points": [
+      "Angelic dream",
+      "Flight to Egypt",
+      "Return to Nazareth"
+    ]
+  },
+  {
+    "title": "Jewish Religious Context in the Time of Jesus",
+    "keywords": [
+      "pharisees","sadducees","sanhedrin"
+    ],
+    "summary": "Jewish society included Pharisees, Sadducees, and other groups.",
+    "scripture_references": ["Matthew 23"],
+    "historical_context": "The Sanhedrin functioned under Roman authority.",
+    "major_points": [
+      "Temple worship",
+      "Law observance debates"
+    ]
+  },
+  {
+    "title": "Roman Political Context",
+    "keywords": [
+      "roman empire","pontius pilate","crucifixion method"
+    ],
+    "summary": "The Roman Empire ruled Judea and authorized crucifixion.",
+    "scripture_references": ["John 18-19"],
+    "historical_context": "Crucifixion was a Roman execution method.",
+    "major_points": [
+      "Roman governance",
+      "Trial procedures"
+    ]
+  },
+  {
+    "title": "Public Ministry of Jesus",
+    "keywords": [
+      "baptism","12 disciples","parables","miracles"
+    ],
+    "summary": "Jesus preached the Kingdom of God and performed miracles.",
+    "scripture_references": ["Matthew 3-7"],
+    "historical_context": "His ministry challenged authorities.",
+    "major_points": [
+      "Calling of disciples",
+      "Sermon on the Mount",
+      "Healing miracles"
+    ]
+  },
+  {
+    "title": "Crucifixion of Jesus Christ",
+    "keywords": [
+      "last supper","trial before pilate","crucifixion","burial"
+    ],
+    "summary": "Jesus was crucified at Golgotha and buried in a tomb.",
+    "scripture_references": ["Matthew 26-27", "John 19"],
+    "historical_context": "The crucifixion occurred during Passover.",
+    "major_points": [
+      "Arrest",
+      "Trials",
+      "Death and burial"
+    ]
+  },
+  {
+    "title": "Resurrection and Ascension",
+    "keywords": [
+      "empty tomb","third day","great commission","ascension"
+    ],
+    "summary": "Jesus rose from the dead and later ascended into heaven.",
+    "scripture_references": ["Matthew 28", "Acts 1"],
+    "historical_context": "The resurrection became central to Christian faith.",
+    "major_points": [
+      "Appearances to disciples",
+      "Great Commission",
+      "Ascension"
+    ]
+  },
+  {
+    "title": "Atonement and Salvation Doctrine",
+    "keywords": [
+      "atonement","salvation","justification","grace","redemption"
+    ],
+    "summary": "Jesus' death is understood as atonement for sin and the basis of salvation by grace through faith.",
+    "scripture_references": ["Romans 3", "Ephesians 2:8-9", "Hebrews 9"],
+    "historical_context": "Rooted in the Jewish sacrificial system.",
+    "major_points": [
+      "Substitutionary sacrifice",
+      "Passover fulfillment",
+      "Justification by faith",
+      "Grace not works"
+    ]
+  },
+  {
+    "title": "Doctrine of the Trinity",
+    "keywords": [
+      "trinity","father son holy spirit","divinity of christ"
+    ],
+    "summary": "God exists as one Being in three Persons: Father, Son, and Holy Spirit.",
+    "scripture_references": ["Matthew 28:19", "John 1:1"],
+    "historical_context": "Clarified in early church councils.",
+    "major_points": [
+      "One God",
+      "Three Persons",
+      "Divinity of Christ",
+      "Personhood of Holy Spirit"
+    ]
+  },
+  {
+    "title": "Messianic Prophecies Fulfilled in Jesus",
+    "keywords": [
+      "isaiah 53","micah 5:2","psalm 22","messianic prophecy"
+    ],
+    "summary": "Jesus is presented as fulfilling Old Testament Messianic prophecies.",
+    "scripture_references": ["Isaiah 53", "Micah 5:2", "Psalm 22"],
+    "historical_context": "Messianic expectations existed in Second Temple Judaism.",
+    "major_points": [
+      "Virgin birth prophecy",
+      "Birthplace prophecy",
+      "Suffering servant imagery"
+    ]
+  },
+  {
+    "title": "Historical Evidence and Reliability",
+    "keywords": [
+      "did jesus exist","gospel reliability","resurrection evidence"
+    ],
+    "summary": "Most historians affirm Jesus' existence. The Gospels are early sources, and the resurrection is central to early Christian proclamation.",
+    "scripture_references": ["Luke 1:1-4", "1 Corinthians 15:3-8"],
+    "historical_context": "New Testament manuscripts are abundant compared to other ancient works.",
+    "major_points": [
+      "Early eyewitness testimony",
+      "Empty tomb tradition",
+      "Transformation of disciples"
+    ]
+  }
+]
