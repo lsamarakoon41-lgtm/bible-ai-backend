@@ -2,10 +2,10 @@ from flask import Flask, request, jsonify
 import json
 import re
 import os
-import time
 import logging
-from collections import Counter
-from functools import lru_cache
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
 
@@ -46,10 +46,7 @@ def load_json(filename):
 if not os.path.exists(KNOWLEDGE_FOLDER):
     os.makedirs(KNOWLEDGE_FOLDER)
 
-# Core Doctrine (PRIORITY)
 doctrine_core = load_json("doctrine_core.json")
-
-# Secondary Knowledge
 jesus_life_data = load_json("jesus_life.json")
 early_church_data = load_json("early_church.json")
 historical_context_data = load_json("historical_context.json")
@@ -57,63 +54,78 @@ historical_context_data = load_json("historical_context.json")
 logging.info("Knowledge Loaded")
 
 # -------------------------------------------------
-# LOAD BRAIN (LOWEST AUTHORITY)
+# LOAD EMBEDDING MODEL
 # -------------------------------------------------
 
-BRAIN_FOLDER = "brain"
-brain_data = []
-brain_last_loaded = 0
-BRAIN_REFRESH_INTERVAL = 60
+logging.info("Loading Embedding Model...")
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+logging.info("Embedding Model Loaded")
 
-def load_brain():
-    global brain_last_loaded
-    data = []
+# -------------------------------------------------
+# BUILD SEMANTIC MEMORY
+# -------------------------------------------------
 
-    if not os.path.exists(BRAIN_FOLDER):
-        os.makedirs(BRAIN_FOLDER)
+SEMANTIC_DATA = []
+SEMANTIC_EMBEDDINGS = []
 
-    for file in os.listdir(BRAIN_FOLDER):
-        if file.endswith((".txt", ".md")):
-            with open(os.path.join(BRAIN_FOLDER, file), "r", encoding="utf-8") as f:
-                content = f.read()
-                paragraphs = [p.strip() for p in content.split("\n") if p.strip()]
-                for p in paragraphs:
-                    data.append({
-                        "source": file,
-                        "content": p,
-                        "lower": p.lower(),
-                        "freq": Counter(re.findall(r"\b[a-zA-Z]+\b", p.lower()))
-                    })
+def build_semantic_memory():
+    global SEMANTIC_DATA, SEMANTIC_EMBEDDINGS
 
-    brain_last_loaded = time.time()
-    logging.info(f"Brain Loaded: {len(data)} segments")
-    return data
+    combined = []
 
-brain_data = load_brain()
+    # Secondary Knowledge
+    secondary = jesus_life_data + early_church_data + historical_context_data
+    for item in secondary:
+        text = item.get("content") or item.get("text") or item.get("title")
+        if text:
+            combined.append({
+                "type": "knowledge",
+                "data": item,
+                "text": text
+            })
 
-def auto_refresh_brain():
-    global brain_data
-    if time.time() - brain_last_loaded > BRAIN_REFRESH_INTERVAL:
-        brain_data = load_brain()
+    # Doctrine Explanations also indexed (for better matching)
+    for entry in doctrine_core:
+        combined.append({
+            "type": "doctrine",
+            "data": entry,
+            "text": entry.get("explanation", "") + " " + entry.get("logical_reasoning", "")
+        })
 
-@lru_cache(maxsize=200)
-def search_brain(question):
-    auto_refresh_brain()
-    words = re.findall(r"\b[a-zA-Z]+\b", question.lower())
-    words = [w for w in words if len(w) > 4]
+    SEMANTIC_DATA = combined
+    texts = [item["text"] for item in SEMANTIC_DATA]
+
+    if texts:
+        SEMANTIC_EMBEDDINGS = embedding_model.encode(texts)
+    else:
+        SEMANTIC_EMBEDDINGS = []
+
+    logging.info(f"Semantic Memory Built: {len(SEMANTIC_DATA)} items")
+
+build_semantic_memory()
+
+def semantic_search(question, top_k=5):
+    if not SEMANTIC_DATA:
+        return []
+
+    query_embedding = embedding_model.encode([question])
+    similarities = cosine_similarity(query_embedding, SEMANTIC_EMBEDDINGS)[0]
+
+    top_indices = np.argsort(similarities)[::-1][:top_k]
 
     results = []
+    for idx in top_indices:
+        if similarities[idx] > 0.30:
+            results.append({
+                "type": SEMANTIC_DATA[idx]["type"],
+                "data": SEMANTIC_DATA[idx]["data"],
+                "score": float(similarities[idx])
+            })
 
-    for item in brain_data:
-        score = sum(item["freq"].get(w, 0) for w in words)
-        if score > 0:
-            results.append({"source": item["source"], "content": item["content"], "score": score})
-
-    results.sort(key=lambda x: x["score"], reverse=True)
-    return results[:5]
+    return results
 
 # -------------------------------------------------
-# SCRIPTURE EXPLAINS SCRIPTURE
+# SCRIPTURE CROSS-REFERENCE
 # -------------------------------------------------
 
 def cross_reference(main_verse, limit=5):
@@ -133,34 +145,6 @@ def cross_reference(main_verse, limit=5):
     results.sort(key=lambda x: x["score"], reverse=True)
 
     return [{"reference": r["reference"], "text": r["text"]} for r in results[:limit]]
-
-# -------------------------------------------------
-# DOCTRINE SEARCH (PRIORITY)
-# -------------------------------------------------
-
-def search_doctrine(question):
-    q = question.lower()
-    for entry in doctrine_core:
-        if entry.get("category", "").lower() in q or entry.get("title", "").lower() in q:
-            return entry
-    return None
-
-def build_mode_c(entry):
-    verses = []
-    for ref in entry.get("core_verses", []):
-        verse = bible_lookup.get(ref.lower())
-        if verse:
-            verses.append(verse)
-
-    return {
-        "type": "doctrine",
-        "category": entry.get("category"),
-        "title": entry.get("title"),
-        "verses": verses,
-        "explanation": entry.get("explanation"),
-        "logical_reasoning": entry.get("logical_reasoning"),
-        "defense_section": entry.get("defense_response")
-    }
 
 # -------------------------------------------------
 # ROUTES
@@ -189,7 +173,7 @@ def ask():
         logging.info(f"Question: {question}")
 
         # -------------------------------------------------
-        # 1️⃣ DIRECT VERSE (HIGHEST AUTHORITY)
+        # 1️⃣ DIRECT VERSE
         # -------------------------------------------------
 
         ref_pattern = r"([1-3]?\s?[A-Za-z]+\s\d+:\d+)"
@@ -207,33 +191,42 @@ def ask():
                 })
 
         # -------------------------------------------------
-        # 2️⃣ DOCTRINE CORE (PRIORITY OVER EVERYTHING)
+        # 2️⃣ SEMANTIC SEARCH (Doctrine + Knowledge)
         # -------------------------------------------------
 
-        doctrine_entry = search_doctrine(question)
-        if doctrine_entry:
-            return jsonify(build_mode_c(doctrine_entry))
+        semantic_results = semantic_search(question)
+
+        doctrine_hits = [r for r in semantic_results if r["type"] == "doctrine"]
+        knowledge_hits = [r for r in semantic_results if r["type"] == "knowledge"]
+
+        # If doctrine strongly matched → return Mode C structure
+        if doctrine_hits:
+            entry = doctrine_hits[0]["data"]
+
+            verses = []
+            for ref in entry.get("core_verses", []):
+                verse = bible_lookup.get(ref.lower())
+                if verse:
+                    verses.append(verse)
+
+            return jsonify({
+                "type": "doctrine",
+                "category": entry.get("category"),
+                "title": entry.get("title"),
+                "verses": verses,
+                "explanation": entry.get("explanation"),
+                "logical_reasoning": entry.get("logical_reasoning"),
+                "defense_section": entry.get("defense_response")
+            })
+
+        if knowledge_hits:
+            return jsonify({
+                "type": "knowledge",
+                "results": [k["data"] for k in knowledge_hits[:3]]
+            })
 
         # -------------------------------------------------
-        # 3️⃣ SECONDARY KNOWLEDGE
-        # -------------------------------------------------
-
-        all_secondary = jesus_life_data + early_church_data + historical_context_data
-
-        for item in all_secondary:
-            if item.get("title", "").lower() in question.lower():
-                return jsonify({"type": "knowledge", "content": item})
-
-        # -------------------------------------------------
-        # 4️⃣ BRAIN (SUPPLEMENT ONLY)
-        # -------------------------------------------------
-
-        brain_results = search_brain(question)
-        if brain_results:
-            return jsonify({"type": "brain_supplement", "results": brain_results})
-
-        # -------------------------------------------------
-        # 5️⃣ KEYWORD FALLBACK
+        # 3️⃣ SCRIPTURE FALLBACK SEARCH
         # -------------------------------------------------
 
         words = re.findall(r"\b[a-zA-Z]+\b", question.lower())
@@ -258,4 +251,5 @@ def ask():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
