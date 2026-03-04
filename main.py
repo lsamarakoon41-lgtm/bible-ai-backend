@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
-logging.info("Starting Bible AI - TFIDF Production Mode")
+logging.info("Starting Bible AI - Production Mode")
 
 # -------------------------------------------------
 # LOAD BIBLE
@@ -94,7 +94,7 @@ else:
 logging.info("Semantic memory ready")
 
 # -------------------------------------------------
-# SEMANTIC SEARCH
+# SEMANTIC SEARCH (STRONG FILTER)
 # -------------------------------------------------
 
 def semantic_search(question):
@@ -107,7 +107,6 @@ def semantic_search(question):
     top_index = np.argmax(similarities)
     top_score = similarities[top_index]
 
-    # 🔥 STRONG FILTER (Railway safe)
     if top_score > 0.40:
         return SEMANTIC_DATA[top_index]
 
@@ -140,7 +139,7 @@ def cross_reference(main_verse, limit=5):
 
 @app.route("/")
 def home():
-    return jsonify({"text": "Bible AI Running - TFIDF Mode"})
+    return jsonify({"text": "Bible AI Running - Production Mode"})
 
 @app.route("/ask", methods=["GET", "POST"])
 def ask():
@@ -160,25 +159,41 @@ def ask():
         logging.info(f"Question: {question}")
 
         # -------------------------------------------------
-        # 1️⃣ DIRECT VERSE
+        # 1️⃣ DIRECT VERSE (SMART DETECTION)
         # -------------------------------------------------
 
-        ref_pattern = r"([1-3]?\s?[A-Za-z]+\s\d+:\d+)"
-        match = re.findall(ref_pattern, question)
+        clean_q = lower_q.replace(".", ":")
+        clean_q = re.sub(r"\s+", " ", clean_q)
+
+        ref_pattern = r"([1-3]?\s?[a-zA-Z]+\s\d+(:\d+)?)"
+        match = re.findall(ref_pattern, clean_q)
 
         if match:
-            ref = match[0].strip().lower()
-            verse = bible_lookup.get(ref)
-            if verse:
-                formatted = f"{verse['reference']}\n\n{verse['text']}\n\n"
+            ref = match[0][0]
 
-                for cr in cross_reference(verse):
-                    formatted += f"{cr['reference']}\n{cr['text']}\n\n"
+            # Chapter only (e.g. Genesis 1)
+            if ":" not in ref:
+                formatted = ""
+                for key in bible_lookup:
+                    if key.startswith(ref):
+                        verse = bible_lookup[key]
+                        formatted += f"{verse['reference']}\n{verse['text']}\n\n"
 
-                return jsonify({"text": formatted.strip()})
+                if formatted:
+                    return jsonify({"text": formatted.strip()})
+
+            else:
+                verse = bible_lookup.get(ref)
+                if verse:
+                    formatted = f"{verse['reference']}\n\n{verse['text']}\n\n"
+
+                    for cr in cross_reference(verse):
+                        formatted += f"{cr['reference']}\n{cr['text']}\n\n"
+
+                    return jsonify({"text": formatted.strip()})
 
         # -------------------------------------------------
-        # 2️⃣ SEMANTIC SEARCH (IMPROVED)
+        # 2️⃣ SEMANTIC SEARCH
         # -------------------------------------------------
 
         result = semantic_search(question)
