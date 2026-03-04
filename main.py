@@ -94,7 +94,7 @@ else:
 logging.info("Semantic memory ready")
 
 # -------------------------------------------------
-# SEMANTIC SEARCH (STRONG FILTER)
+# SEMANTIC SEARCH
 # -------------------------------------------------
 
 def semantic_search(question):
@@ -159,38 +159,50 @@ def ask():
         logging.info(f"Question: {question}")
 
         # -------------------------------------------------
-        # 1️⃣ DIRECT VERSE (SMART DETECTION)
+        # 0️⃣ BRAIN OVERRIDE (Self Learning Folder)
+        # -------------------------------------------------
+
+        brain_path = os.path.join("brain", f"{lower_q}.txt")
+        if os.path.exists(brain_path):
+            with open(brain_path, "r", encoding="utf-8") as f:
+                return jsonify({"text": f.read().strip()})
+
+        # -------------------------------------------------
+        # 1️⃣ DIRECT VERSE
         # -------------------------------------------------
 
         clean_q = lower_q.replace(".", ":")
         clean_q = re.sub(r"\s+", " ", clean_q)
 
-        ref_pattern = r"([1-3]?\s?[a-zA-Z]+\s\d+(:\d+)?)"
-        match = re.findall(ref_pattern, clean_q)
+        # Support "John 3 16"
+        clean_q = re.sub(r"(\d+)\s+(\d+)$", r"\1:\2", clean_q)
 
-        if match:
-            ref = match[0][0]
+        # Exact verse
+        full_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+:\d+)$"
+        full_match = re.match(full_pattern, clean_q)
 
-            # Chapter only (e.g. Genesis 1)
-            if ":" not in ref:
-                formatted = ""
-                for key in bible_lookup:
-                    if key.startswith(ref):
-                        verse = bible_lookup[key]
-                        formatted += f"{verse['reference']}\n{verse['text']}\n\n"
+        if full_match:
+            ref = full_match.group(1)
+            verse = bible_lookup.get(ref)
+            if verse:
+                formatted = f"{verse['reference']}\n\n{verse['text']}\n\n"
+                for cr in cross_reference(verse):
+                    formatted += f"{cr['reference']}\n{cr['text']}\n\n"
+                return jsonify({"text": formatted.strip()})
 
-                if formatted:
-                    return jsonify({"text": formatted.strip()})
+        # Chapter only
+        chapter_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+)$"
+        chapter_match = re.match(chapter_pattern, clean_q)
 
-            else:
-                verse = bible_lookup.get(ref)
-                if verse:
-                    formatted = f"{verse['reference']}\n\n{verse['text']}\n\n"
+        if chapter_match:
+            chapter_ref = chapter_match.group(1)
+            formatted = ""
+            for key, verse in bible_lookup.items():
+                if key.startswith(chapter_ref + ":"):
+                    formatted += f"{verse['reference']}\n{verse['text']}\n\n"
 
-                    for cr in cross_reference(verse):
-                        formatted += f"{cr['reference']}\n{cr['text']}\n\n"
-
-                    return jsonify({"text": formatted.strip()})
+            if formatted:
+                return jsonify({"text": formatted.strip()})
 
         # -------------------------------------------------
         # 2️⃣ SEMANTIC SEARCH
@@ -249,6 +261,7 @@ def ask():
     except Exception as e:
         logging.error(str(e))
         return jsonify({"text": "Error processing request."})
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
