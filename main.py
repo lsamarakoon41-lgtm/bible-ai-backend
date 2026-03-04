@@ -29,7 +29,7 @@ bible_list = list(bible_lookup.values())
 logging.info(f"Bible Loaded: {len(bible_list)} verses")
 
 # -------------------------------------------------
-# LOAD ALL KNOWLEDGE FILES
+# LOAD KNOWLEDGE
 # -------------------------------------------------
 
 KNOWLEDGE_FOLDER = "knowledge"
@@ -47,7 +47,6 @@ if os.path.exists(KNOWLEDGE_FOLDER):
                     if isinstance(data, list):
                         for entry in data:
 
-                            # Auto-detect doctrine (has core_verses)
                             if "core_verses" in entry:
                                 combined = (
                                     entry.get("title", "") + " " +
@@ -98,24 +97,21 @@ logging.info("Semantic memory ready")
 # SEMANTIC SEARCH
 # -------------------------------------------------
 
-def semantic_search(question, top_k=5):
+def semantic_search(question):
     if not vectorizer or DOC_VECTORS is None:
-        return []
+        return None
 
     query_vector = vectorizer.transform([question])
     similarities = cosine_similarity(query_vector, DOC_VECTORS)[0]
 
-    top_indices = np.argsort(similarities)[::-1][:top_k]
+    top_index = np.argmax(similarities)
+    top_score = similarities[top_index]
 
-    results = []
-    for idx in top_indices:
-        if similarities[idx] > 0.15:
-            results.append({
-                "type": SEMANTIC_DATA[idx]["type"],
-                "data": SEMANTIC_DATA[idx]["data"]
-            })
+    # 🔥 STRONG FILTER (Railway safe)
+    if top_score > 0.40:
+        return SEMANTIC_DATA[top_index]
 
-    return results
+    return None
 
 # -------------------------------------------------
 # CROSS REFERENCE
@@ -136,7 +132,6 @@ def cross_reference(main_verse, limit=5):
             results.append((score, verse))
 
     results.sort(key=lambda x: x[0], reverse=True)
-
     return [r[1] for r in results[:limit]]
 
 # -------------------------------------------------
@@ -164,17 +159,10 @@ def ask():
 
         logging.info(f"Question: {question}")
 
-        # ----------------------------------------
-        # 1️⃣ BRAIN
-        # ----------------------------------------
-        brain_path = os.path.join("brain", f"{lower_q}.txt")
-        if os.path.exists(brain_path):
-            with open(brain_path, "r", encoding="utf-8") as f:
-                return jsonify({"text": f.read().strip()})
+        # -------------------------------------------------
+        # 1️⃣ DIRECT VERSE
+        # -------------------------------------------------
 
-        # ----------------------------------------
-        # 2️⃣ DIRECT VERSE
-        # ----------------------------------------
         ref_pattern = r"([1-3]?\s?[A-Za-z]+\s\d+:\d+)"
         match = re.findall(ref_pattern, question)
 
@@ -189,12 +177,13 @@ def ask():
 
                 return jsonify({"text": formatted.strip()})
 
-        # ----------------------------------------
-        # 3️⃣ SEMANTIC SEARCH
-        # ----------------------------------------
-        semantic_results = semantic_search(question)
+        # -------------------------------------------------
+        # 2️⃣ SEMANTIC SEARCH (IMPROVED)
+        # -------------------------------------------------
 
-        for result in semantic_results:
+        result = semantic_search(question)
+
+        if result:
 
             if result["type"] == "doctrine":
                 entry = result["data"]
@@ -216,9 +205,10 @@ def ask():
                 formatted += f"{item.get('content') or item.get('text','')}\n\n"
                 return jsonify({"text": formatted.strip()})
 
-        # ----------------------------------------
-        # 4️⃣ SCRIPTURE FALLBACK
-        # ----------------------------------------
+        # -------------------------------------------------
+        # 3️⃣ SCRIPTURE FALLBACK
+        # -------------------------------------------------
+
         words = re.findall(r"\b[a-zA-Z]+\b", lower_q)
         words = [w for w in words if len(w) > 4]
 
