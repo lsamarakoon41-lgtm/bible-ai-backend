@@ -6,14 +6,10 @@ from flask import Flask, request, jsonify
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# -------------------------------------------------
-# APP SETUP
-# -------------------------------------------------
-
 app = Flask(__name__)
 
 KNOWLEDGE_FOLDER = "knowledge"
-BIBLE_FILE = "bible.json"
+BIBLE_FILE = "KJV.json"
 
 SEMANTIC_DATA = []
 VECTOR_TEXTS = []
@@ -22,10 +18,6 @@ tfidf_matrix = None
 
 bible_lookup = {}
 bible_list = []
-
-# -------------------------------------------------
-# LOAD KNOWLEDGE FILES
-# -------------------------------------------------
 
 def load_knowledge():
     global SEMANTIC_DATA, VECTOR_TEXTS, tfidf_matrix
@@ -55,10 +47,6 @@ def load_knowledge():
     if VECTOR_TEXTS:
         tfidf_matrix = vectorizer.fit_transform(VECTOR_TEXTS)
 
-# -------------------------------------------------
-# LOAD BIBLE
-# -------------------------------------------------
-
 def load_bible():
     global bible_lookup, bible_list
 
@@ -69,10 +57,6 @@ def load_bible():
             key = verse["reference"].lower()
             bible_lookup[key] = verse
             bible_list.append(verse)
-
-# -------------------------------------------------
-# SYNONYMS
-# -------------------------------------------------
 
 SYNONYMS = {
     "die": ["crucified", "death", "killed"],
@@ -91,10 +75,6 @@ def expand_question(question):
             expanded.extend(SYNONYMS[word])
 
     return " ".join(expanded)
-
-# -------------------------------------------------
-# INTENT DETECTION
-# -------------------------------------------------
 
 def detect_intent(question):
     q = question.lower()
@@ -116,10 +96,6 @@ def detect_intent(question):
 
     return "general"
 
-# -------------------------------------------------
-# SEMANTIC SEARCH
-# -------------------------------------------------
-
 def semantic_search(question):
     if tfidf_matrix is None:
         return None
@@ -136,10 +112,6 @@ def semantic_search(question):
 
     return results if results else None
 
-# -------------------------------------------------
-# BUILD SMART ANSWER
-# -------------------------------------------------
-
 def build_smart_answer(results, question):
     response = ""
 
@@ -148,7 +120,6 @@ def build_smart_answer(results, question):
             if key in entry and entry[key]:
                 response += entry[key] + "\n\n"
 
-    # Attach best verse
     words = question.lower().split()
     best_verse = None
     best_score = 0
@@ -168,10 +139,6 @@ def build_smart_answer(results, question):
 
     return response.strip()
 
-# -------------------------------------------------
-# ROUTE
-# -------------------------------------------------
-
 @app.route("/ask", methods=["POST"])
 def ask():
     data = request.get_json()
@@ -182,7 +149,6 @@ def ask():
 
     intent = detect_intent(question)
 
-    # 1️⃣ Verse lookup
     if intent == "verse_lookup":
         key = question.lower()
         verse = bible_lookup.get(key)
@@ -190,7 +156,6 @@ def ask():
             text = f"{verse['reference']}\n{verse['text']}"
             return jsonify({"text": text})
 
-    # 2️⃣ Chapter lookup
     if intent == "chapter_lookup":
         chapter_ref = question.lower().replace("chapter", "").strip()
         formatted = ""
@@ -206,7 +171,6 @@ def ask():
         if formatted:
             return jsonify({"text": formatted.strip()})
 
-    # 3️⃣ Semantic search
     expanded_q = expand_question(question)
     results = semantic_search(expanded_q)
 
@@ -215,10 +179,6 @@ def ask():
         return jsonify({"text": answer_text})
 
     return jsonify({"text": "I could not find a clear answer in Scripture. Please ask another question."})
-
-# -------------------------------------------------
-# STARTUP
-# -------------------------------------------------
 
 load_knowledge()
 load_bible()
