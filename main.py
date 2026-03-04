@@ -78,20 +78,12 @@ if os.path.exists(KNOWLEDGE_FOLDER):
             except Exception as e:
                 logging.warning(f"Failed loading {filename}: {e}")
 
-logging.info(f"Knowledge Loaded: {len(SEMANTIC_DATA)} entries")
-
-# -------------------------------------------------
-# BUILD TFIDF
-# -------------------------------------------------
-
 if TEXT_CORPUS:
     vectorizer = TfidfVectorizer(stop_words="english")
     DOC_VECTORS = vectorizer.fit_transform(TEXT_CORPUS)
 else:
     vectorizer = None
     DOC_VECTORS = None
-
-logging.info("Semantic memory ready")
 
 # -------------------------------------------------
 # SEMANTIC SEARCH
@@ -156,28 +148,36 @@ def ask():
         if not question:
             return jsonify({"text": "Please provide a question."})
 
-        logging.info(f"Question: {question}")
-
         # -------------------------------------------------
-        # 0️⃣ BRAIN OVERRIDE (Self Learning Folder)
+        # INTENT DETECTION (Lightweight)
         # -------------------------------------------------
 
-        brain_path = os.path.join("brain", f"{lower_q}.txt")
-        if os.path.exists(brain_path):
-            with open(brain_path, "r", encoding="utf-8") as f:
-                return jsonify({"text": f.read().strip()})
+        if "jesus" in lower_q and ("who" in lower_q or "tell" in lower_q):
+            path = os.path.join("brain", "jesus_overview.txt")
+            if os.path.exists(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    return jsonify({"text": f.read().strip()})
+
+        if "christianity" in lower_q and "history" in lower_q:
+            path = os.path.join("brain", "christianity_history.txt")
+            if os.path.exists(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    return jsonify({"text": f.read().strip()})
+
+        if "bible" in lower_q and ("what" in lower_q or "about" in lower_q):
+            path = os.path.join("brain", "bible_overview.txt")
+            if os.path.exists(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    return jsonify({"text": f.read().strip()})
 
         # -------------------------------------------------
-        # 1️⃣ DIRECT VERSE
+        # DIRECT VERSE MATCH
         # -------------------------------------------------
 
         clean_q = lower_q.replace(".", ":")
         clean_q = re.sub(r"\s+", " ", clean_q)
-
-        # Support "John 3 16"
         clean_q = re.sub(r"(\d+)\s+(\d+)$", r"\1:\2", clean_q)
 
-        # Exact verse
         full_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+:\d+)$"
         full_match = re.match(full_pattern, clean_q)
 
@@ -190,7 +190,6 @@ def ask():
                     formatted += f"{cr['reference']}\n{cr['text']}\n\n"
                 return jsonify({"text": formatted.strip()})
 
-        # Chapter only
         chapter_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+)$"
         chapter_match = re.match(chapter_pattern, clean_q)
 
@@ -200,21 +199,19 @@ def ask():
             for key, verse in bible_lookup.items():
                 if key.startswith(chapter_ref + ":"):
                     formatted += f"{verse['reference']}\n{verse['text']}\n\n"
-
             if formatted:
                 return jsonify({"text": formatted.strip()})
 
         # -------------------------------------------------
-        # 2️⃣ SEMANTIC SEARCH
+        # SEMANTIC SEARCH
         # -------------------------------------------------
 
         result = semantic_search(question)
 
         if result:
+            entry = result["data"]
 
             if result["type"] == "doctrine":
-                entry = result["data"]
-
                 formatted = f"{entry.get('title','')}\n\n"
                 formatted += f"{entry.get('explanation','')}\n\n"
                 formatted += f"{entry.get('logical_reasoning','')}\n\n"
@@ -225,15 +222,13 @@ def ask():
                         formatted += f"{verse['reference']}\n{verse['text']}\n\n"
 
                 return jsonify({"text": formatted.strip()})
-
             else:
-                item = result["data"]
-                formatted = f"{item.get('title','')}\n\n"
-                formatted += f"{item.get('content') or item.get('text','')}\n\n"
+                formatted = f"{entry.get('title','')}\n\n"
+                formatted += f"{entry.get('content') or entry.get('text','')}\n\n"
                 return jsonify({"text": formatted.strip()})
 
         # -------------------------------------------------
-        # 3️⃣ SCRIPTURE FALLBACK
+        # SCRIPTURE FALLBACK
         # -------------------------------------------------
 
         words = re.findall(r"\b[a-zA-Z]+\b", lower_q)
