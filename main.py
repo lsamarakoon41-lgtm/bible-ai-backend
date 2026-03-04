@@ -1,236 +1,227 @@
-from flask import Flask, request, jsonify
-import json
-import re
 import os
-import logging
+import re
+import json
 import numpy as np
+from flask import Flask, request, jsonify
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# -------------------------------------------------
+# APP SETUP
+# -------------------------------------------------
+
 app = Flask(__name__)
 
-logging.basicConfig(level=logging.INFO)
+KNOWLEDGE_FOLDER = "knowledge"
+BIBLE_FILE = "bible.json"
+
+SEMANTIC_DATA = []
+VECTOR_TEXTS = []
+vectorizer = TfidfVectorizer(stop_words="english")
+tfidf_matrix = None
+
+bible_lookup = {}
+bible_list = []
+
+# -------------------------------------------------
+# LOAD KNOWLEDGE FILES
+# -------------------------------------------------
+
+def load_knowledge():
+    global SEMANTIC_DATA, VECTOR_TEXTS, tfidf_matrix
+
+    for filename in os.listdir(KNOWLEDGE_FOLDER):
+        if filename.endswith(".json"):
+            path = os.path.join(KNOWLEDGE_FOLDER, filename)
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+                for entry in data:
+                    text_parts = []
+
+                    for key in ["title", "explanation", "logical_reasoning", "content", "text"]:
+                        if key in entry and entry[key]:
+                            text_parts.append(entry[key])
+
+                    combined_text = " ".join(text_parts)
+
+                    SEMANTIC_DATA.append({
+                        "data": entry,
+                        "combined_text": combined_text
+                    })
+
+                    VECTOR_TEXTS.append(combined_text)
+
+    if VECTOR_TEXTS:
+        tfidf_matrix = vectorizer.fit_transform(VECTOR_TEXTS)
 
 # -------------------------------------------------
 # LOAD BIBLE
 # -------------------------------------------------
 
-with open("kjv.json", "r", encoding="utf-8") as f:
-    bible_data = json.load(f)
+def load_bible():
+    global bible_lookup, bible_list
 
-bible_lookup = {
-    ref.lower(): {"reference": ref, "text": text}
-    for ref, text in bible_data.items()
+    with open(BIBLE_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+        for verse in data:
+            key = verse["reference"].lower()
+            bible_lookup[key] = verse
+            bible_list.append(verse)
+
+# -------------------------------------------------
+# SYNONYMS
+# -------------------------------------------------
+
+SYNONYMS = {
+    "die": ["crucified", "death", "killed"],
+    "love": ["charity", "compassion"],
+    "sin": ["iniquity", "transgression"],
+    "bible": ["scripture", "word"],
+    "jesus": ["christ", "messiah", "son"]
 }
 
-bible_list = list(bible_lookup.values())
+def expand_question(question):
+    words = question.lower().split()
+    expanded = words.copy()
+
+    for word in words:
+        if word in SYNONYMS:
+            expanded.extend(SYNONYMS[word])
+
+    return " ".join(expanded)
 
 # -------------------------------------------------
-# LOAD KNOWLEDGE (Semantic)
+# INTENT DETECTION
 # -------------------------------------------------
 
-KNOWLEDGE_FOLDER = "knowledge"
-SEMANTIC_DATA = []
-TEXT_CORPUS = []
+def detect_intent(question):
+    q = question.lower()
 
-if os.path.exists(KNOWLEDGE_FOLDER):
-    for filename in os.listdir(KNOWLEDGE_FOLDER):
-        if filename.endswith(".json"):
-            path = os.path.join(KNOWLEDGE_FOLDER, filename)
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
+    if re.search(r"\b\d+[:.]\d+\b", q):
+        return "verse_lookup"
 
-                    if isinstance(data, list):
-                        for entry in data:
-                            text = (
-                                entry.get("title", "") + " " +
-                                entry.get("explanation", "") + " " +
-                                entry.get("logical_reasoning", "") + " " +
-                                entry.get("content", "") + " " +
-                                entry.get("text", "")
-                            )
+    if "chapter" in q:
+        return "chapter_lookup"
 
-                            SEMANTIC_DATA.append({
-                                "data": entry,
-                                "text": text
-                            })
-                            TEXT_CORPUS.append(text)
+    if any(w in q for w in ["who is", "what is", "define", "explain"]):
+        return "definition"
 
-            except Exception as e:
-                logging.warning(f"Failed loading {filename}: {e}")
+    if any(w in q for w in ["why", "reason"]):
+        return "reason"
 
-if TEXT_CORPUS:
-    vectorizer = TfidfVectorizer(stop_words="english")
-    DOC_VECTORS = vectorizer.fit_transform(TEXT_CORPUS)
-else:
-    vectorizer = None
-    DOC_VECTORS = None
+    if any(w in q for w in ["how"]):
+        return "process"
+
+    return "general"
 
 # -------------------------------------------------
 # SEMANTIC SEARCH
 # -------------------------------------------------
 
 def semantic_search(question):
-    if not vectorizer:
+    if tfidf_matrix is None:
         return None
 
     query_vector = vectorizer.transform([question])
-    similarities = cosine_similarity(query_vector, DOC_VECTORS)[0]
+    similarities = cosine_similarity(query_vector, tfidf_matrix)[0]
 
-    top_index = np.argmax(similarities)
-    top_score = similarities[top_index]
-
-    if top_score > 0.40:
-        return SEMANTIC_DATA[top_index]["data"]
-
-    return None
-
-# -------------------------------------------------
-# CROSS REFERENCE
-# -------------------------------------------------
-
-def cross_reference(main_verse, limit=5):
-    words = re.findall(r"\b[a-zA-Z]+\b", main_verse["text"].lower())
-    words = [w for w in words if len(w) > 4]
+    top_indices = similarities.argsort()[-3:][::-1]
 
     results = []
+    for idx in top_indices:
+        if similarities[idx] > 0.30:
+            results.append(SEMANTIC_DATA[idx]["data"])
+
+    return results if results else None
+
+# -------------------------------------------------
+# BUILD SMART ANSWER
+# -------------------------------------------------
+
+def build_smart_answer(results, question):
+    response = ""
+
+    for entry in results:
+        for key in ["title", "explanation", "logical_reasoning", "content", "text"]:
+            if key in entry and entry[key]:
+                response += entry[key] + "\n\n"
+
+    # Attach best verse
+    words = question.lower().split()
+    best_verse = None
+    best_score = 0
 
     for verse in bible_list:
-        if verse["reference"] == main_verse["reference"]:
-            continue
-
         score = sum(1 for w in words if w in verse["text"].lower())
-        if score > 0:
-            results.append((score, verse))
+        if score > best_score:
+            best_score = score
+            best_verse = verse
 
-    results.sort(key=lambda x: x[0], reverse=True)
-    return [r[1] for r in results[:limit]]
+    if best_verse:
+        response += "Bible Verse:\n"
+        response += f"{best_verse['reference']}\n"
+        response += f"{best_verse['text']}\n\n"
+
+    response += "May the truth of Scripture guide you."
+
+    return response.strip()
 
 # -------------------------------------------------
-# ROUTES
+# ROUTE
 # -------------------------------------------------
 
-@app.route("/")
-def home():
-    return jsonify({"text": "Bible AI Running"})
-
-@app.route("/ask", methods=["GET", "POST"])
+@app.route("/ask", methods=["POST"])
 def ask():
-    try:
-        if request.method == "GET":
-            question = request.args.get("question", "")
-        else:
-            data = request.get_json(silent=True)
-            question = data.get("question", "") if data else ""
+    data = request.get_json()
+    question = data.get("question", "").strip()
 
-        question = question.strip()
-        lower_q = question.lower()
+    if not question:
+        return jsonify({"text": "Please ask a question."})
 
-        if not question:
-            return jsonify({"text": "Please provide a question."})
+    intent = detect_intent(question)
 
-        # -------------------------------------------------
-        # INTENT DETECTION (VERY IMPORTANT)
-        # -------------------------------------------------
+    # 1️⃣ Verse lookup
+    if intent == "verse_lookup":
+        key = question.lower()
+        verse = bible_lookup.get(key)
+        if verse:
+            text = f"{verse['reference']}\n{verse['text']}"
+            return jsonify({"text": text})
 
-        if "jesus" in lower_q:
-            path = os.path.join("brain", "jesus_overview.txt")
-            if os.path.exists(path):
-                with open(path, "r", encoding="utf-8") as f:
-                    return jsonify({"text": f.read().strip()})
-
-        if "christianity" in lower_q:
-            path = os.path.join("brain", "christianity_history.txt")
-            if os.path.exists(path):
-                with open(path, "r", encoding="utf-8") as f:
-                    return jsonify({"text": f.read().strip()})
-
-        if "bible" in lower_q and not re.search(r"\b\d+[:. ]\d+\b", lower_q):
-            path = os.path.join("brain", "bible_overview.txt")
-            if os.path.exists(path):
-                with open(path, "r", encoding="utf-8") as f:
-                    return jsonify({"text": f.read().strip()})
-
-        # -------------------------------------------------
-        # DIRECT VERSE MATCH
-        # -------------------------------------------------
-
-        clean_q = lower_q.replace(".", ":")
-        clean_q = re.sub(r"\s+", " ", clean_q)
-        clean_q = re.sub(r"(\d+)\s+(\d+)$", r"\1:\2", clean_q)
-
-        # Exact verse
-        full_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+:\d+)$"
-        full_match = re.match(full_pattern, clean_q)
-
-        if full_match:
-            ref = full_match.group(1)
-            verse = bible_lookup.get(ref)
-            if verse:
-                formatted = f"{verse['reference']}\n\n{verse['text']}\n\n"
-                for cr in cross_reference(verse):
-                    formatted += f"{cr['reference']}\n{cr['text']}\n\n"
-                return jsonify({"text": formatted.strip()})
-
-        # Chapter only
-        chapter_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+)$"
-        chapter_match = re.match(chapter_pattern, clean_q)
-
-        if chapter_match:
-            chapter_ref = chapter_match.group(1)
-            formatted = ""
-
-            for key, verse in bible_lookup.items():
-                if key.startswith(chapter_ref + ":"):
-                    formatted += f"{verse['reference']}\n{verse['text']}\n\n"
-
-            if formatted:
-                return jsonify({"text": formatted.strip()})
-
-        # -------------------------------------------------
-        # SEMANTIC SEARCH
-        # -------------------------------------------------
-
-        result = semantic_search(question)
-
-        if result:
-            formatted = ""
-            for key, value in result.items():
-                if isinstance(value, str):
-                    formatted += value + "\n\n"
-            return jsonify({"text": formatted.strip()})
-
-        # -------------------------------------------------
-        # SCRIPTURE FALLBACK
-        # -------------------------------------------------
-
-        words = re.findall(r"\b[a-zA-Z]+\b", lower_q)
-        words = [w for w in words if len(w) > 4]
-
-        results = []
-
-        for verse in bible_list:
-            score = sum(1 for w in words if w in verse["text"].lower())
-            if score > 0:
-                results.append((score, verse))
-
-        results.sort(key=lambda x: x[0], reverse=True)
-
+    # 2️⃣ Chapter lookup
+    if intent == "chapter_lookup":
+        chapter_ref = question.lower().replace("chapter", "").strip()
         formatted = ""
-        for r in results[:5]:
-            v = r[1]
-            formatted += f"{v['reference']}\n{v['text']}\n\n"
+        count = 0
+
+        for key, verse in bible_lookup.items():
+            if key.startswith(chapter_ref + ":"):
+                formatted += f"{verse['reference']}\n{verse['text']}\n\n"
+                count += 1
+                if count >= 40:
+                    break
 
         if formatted:
             return jsonify({"text": formatted.strip()})
 
-        return jsonify({"text": "No relevant answer found."})
+    # 3️⃣ Semantic search
+    expanded_q = expand_question(question)
+    results = semantic_search(expanded_q)
 
-    except Exception as e:
-        logging.error(str(e))
-        return jsonify({"text": "Error processing request."})
+    if results:
+        answer_text = build_smart_answer(results, question)
+        return jsonify({"text": answer_text})
 
+    return jsonify({"text": "I could not find a clear answer in Scripture. Please ask another question."})
+
+# -------------------------------------------------
+# STARTUP
+# -------------------------------------------------
+
+load_knowledge()
+load_bible()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
