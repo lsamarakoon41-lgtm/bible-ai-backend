@@ -9,7 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__)
 
 KNOWLEDGE_FOLDER = "knowledge"
-BIBLE_FILE = "KJV.json"
+BIBLE_FILE = "kjv.json"
 
 SEMANTIC_DATA = []
 VECTOR_TEXTS = []
