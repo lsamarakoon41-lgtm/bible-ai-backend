@@ -10,7 +10,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
-logging.info("Starting Bible AI - Production Mode")
 
 # -------------------------------------------------
 # LOAD BIBLE
@@ -26,10 +25,8 @@ bible_lookup = {
 
 bible_list = list(bible_lookup.values())
 
-logging.info(f"Bible Loaded: {len(bible_list)} verses")
-
 # -------------------------------------------------
-# LOAD KNOWLEDGE
+# LOAD KNOWLEDGE (Semantic)
 # -------------------------------------------------
 
 KNOWLEDGE_FOLDER = "knowledge"
@@ -46,34 +43,19 @@ if os.path.exists(KNOWLEDGE_FOLDER):
 
                     if isinstance(data, list):
                         for entry in data:
+                            text = (
+                                entry.get("title", "") + " " +
+                                entry.get("explanation", "") + " " +
+                                entry.get("logical_reasoning", "") + " " +
+                                entry.get("content", "") + " " +
+                                entry.get("text", "")
+                            )
 
-                            if "core_verses" in entry:
-                                combined = (
-                                    entry.get("title", "") + " " +
-                                    entry.get("explanation", "") + " " +
-                                    entry.get("logical_reasoning", "")
-                                )
-
-                                SEMANTIC_DATA.append({
-                                    "type": "doctrine",
-                                    "data": entry,
-                                    "text": combined
-                                })
-                                TEXT_CORPUS.append(combined)
-
-                            else:
-                                text = (
-                                    entry.get("content") or
-                                    entry.get("text") or
-                                    entry.get("title", "")
-                                )
-
-                                SEMANTIC_DATA.append({
-                                    "type": "knowledge",
-                                    "data": entry,
-                                    "text": text
-                                })
-                                TEXT_CORPUS.append(text)
+                            SEMANTIC_DATA.append({
+                                "data": entry,
+                                "text": text
+                            })
+                            TEXT_CORPUS.append(text)
 
             except Exception as e:
                 logging.warning(f"Failed loading {filename}: {e}")
@@ -90,7 +72,7 @@ else:
 # -------------------------------------------------
 
 def semantic_search(question):
-    if not vectorizer or DOC_VECTORS is None:
+    if not vectorizer:
         return None
 
     query_vector = vectorizer.transform([question])
@@ -100,7 +82,7 @@ def semantic_search(question):
     top_score = similarities[top_index]
 
     if top_score > 0.40:
-        return SEMANTIC_DATA[top_index]
+        return SEMANTIC_DATA[top_index]["data"]
 
     return None
 
@@ -131,7 +113,7 @@ def cross_reference(main_verse, limit=5):
 
 @app.route("/")
 def home():
-    return jsonify({"text": "Bible AI Running - Production Mode"})
+    return jsonify({"text": "Bible AI Running"})
 
 @app.route("/ask", methods=["GET", "POST"])
 def ask():
@@ -149,22 +131,22 @@ def ask():
             return jsonify({"text": "Please provide a question."})
 
         # -------------------------------------------------
-        # INTENT DETECTION (Lightweight)
+        # INTENT DETECTION (VERY IMPORTANT)
         # -------------------------------------------------
 
-        if "jesus" in lower_q and ("who" in lower_q or "tell" in lower_q):
+        if "jesus" in lower_q:
             path = os.path.join("brain", "jesus_overview.txt")
             if os.path.exists(path):
                 with open(path, "r", encoding="utf-8") as f:
                     return jsonify({"text": f.read().strip()})
 
-        if "christianity" in lower_q and "history" in lower_q:
+        if "christianity" in lower_q:
             path = os.path.join("brain", "christianity_history.txt")
             if os.path.exists(path):
                 with open(path, "r", encoding="utf-8") as f:
                     return jsonify({"text": f.read().strip()})
 
-        if "bible" in lower_q and ("what" in lower_q or "about" in lower_q):
+        if "bible" in lower_q and not re.search(r"\b\d+[:. ]\d+\b", lower_q):
             path = os.path.join("brain", "bible_overview.txt")
             if os.path.exists(path):
                 with open(path, "r", encoding="utf-8") as f:
@@ -178,6 +160,7 @@ def ask():
         clean_q = re.sub(r"\s+", " ", clean_q)
         clean_q = re.sub(r"(\d+)\s+(\d+)$", r"\1:\2", clean_q)
 
+        # Exact verse
         full_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+:\d+)$"
         full_match = re.match(full_pattern, clean_q)
 
@@ -190,15 +173,18 @@ def ask():
                     formatted += f"{cr['reference']}\n{cr['text']}\n\n"
                 return jsonify({"text": formatted.strip()})
 
+        # Chapter only
         chapter_pattern = r"^([1-3]?\s?[a-zA-Z]+\s\d+)$"
         chapter_match = re.match(chapter_pattern, clean_q)
 
         if chapter_match:
             chapter_ref = chapter_match.group(1)
             formatted = ""
+
             for key, verse in bible_lookup.items():
                 if key.startswith(chapter_ref + ":"):
                     formatted += f"{verse['reference']}\n{verse['text']}\n\n"
+
             if formatted:
                 return jsonify({"text": formatted.strip()})
 
@@ -209,23 +195,11 @@ def ask():
         result = semantic_search(question)
 
         if result:
-            entry = result["data"]
-
-            if result["type"] == "doctrine":
-                formatted = f"{entry.get('title','')}\n\n"
-                formatted += f"{entry.get('explanation','')}\n\n"
-                formatted += f"{entry.get('logical_reasoning','')}\n\n"
-
-                for ref in entry.get("core_verses", []):
-                    verse = bible_lookup.get(ref.lower())
-                    if verse:
-                        formatted += f"{verse['reference']}\n{verse['text']}\n\n"
-
-                return jsonify({"text": formatted.strip()})
-            else:
-                formatted = f"{entry.get('title','')}\n\n"
-                formatted += f"{entry.get('content') or entry.get('text','')}\n\n"
-                return jsonify({"text": formatted.strip()})
+            formatted = ""
+            for key, value in result.items():
+                if isinstance(value, str):
+                    formatted += value + "\n\n"
+            return jsonify({"text": formatted.strip()})
 
         # -------------------------------------------------
         # SCRIPTURE FALLBACK
