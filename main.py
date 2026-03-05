@@ -1,231 +1,246 @@
 from flask import Flask, request, jsonify
 import json
 import os
+import random
+import re
 
 app = Flask(__name__)
 
-# -------------------------
-# Load Bible
-# -------------------------
+# ================================
+# LOAD KNOWLEDGE
+# ================================
 
-BIBLE = []
-BIBLE_VERSES = []
+KNOWLEDGE_FOLDER = "knowledge"
 
-try:
-    with open("kjv.json", "r", encoding="utf-8") as f:
-        BIBLE = json.load(f)
+knowledge_data = []
 
-    # Flatten Bible for searching
-    for book in BIBLE:
-        book_name = book.get("name","")
+def load_knowledge():
+    global knowledge_data
+    knowledge_data = []
 
-        for chapter in book.get("chapters",[]):
+    if not os.path.exists(KNOWLEDGE_FOLDER):
+        return
 
-            for verse in chapter:
-
-                BIBLE_VERSES.append({
-                    "book": book_name,
-                    "chapter": verse.get("chapter"),
-                    "verse": verse.get("verse"),
-                    "text": verse.get("text","")
-                })
-
-except Exception as e:
-    print("Bible load error:", e)
-
-print("Bible verses loaded:", len(BIBLE_VERSES))
-
-
-# -------------------------
-# Load Knowledge
-# -------------------------
-
-KNOWLEDGE = []
-
-try:
-    with open("knowledge_index.json","r",encoding="utf-8") as f:
-        index = json.load(f)
-
-    for category in index:
-
-        for file in index[category]:
-
-            path = os.path.join("knowledge",file)
-
-            if os.path.exists(path):
-
+    for file in os.listdir(KNOWLEDGE_FOLDER):
+        if file.endswith(".json"):
+            path = os.path.join(KNOWLEDGE_FOLDER, file)
+            with open(path, "r", encoding="utf-8") as f:
                 try:
-                    with open(path,"r",encoding="utf-8") as k:
+                    data = json.load(f)
+                    knowledge_data.extend(data)
+                except:
+                    pass
 
-                        data = json.load(k)
+load_knowledge()
 
-                        if isinstance(data,list):
+# ================================
+# DAILY BIBLE VERSE
+# ================================
 
-                            for item in data:
+daily_verses = [
+    "John 3:16 - For God so loved the world...",
+    "Psalm 23:1 - The Lord is my shepherd...",
+    "Romans 8:28 - All things work together for good...",
+    "Matthew 5:9 - Blessed are the peacemakers...",
+]
 
-                                if isinstance(item,dict):
+def get_daily_verse():
+    return random.choice(daily_verses)
 
-                                    KNOWLEDGE.append(item)
+# ================================
+# SEMANTIC VERSE INTELLIGENCE
+# ================================
 
-                except Exception as e:
-                    print("Knowledge file error:",file,e)
+SEMANTIC_MAP = {
+    "jesus": ["christ", "messiah", "lord", "son"],
+    "die": ["death", "crucified", "cross", "sacrifice"],
+    "love": ["charity", "mercy", "compassion"],
+    "faith": ["believe", "trust", "hope"],
+    "sin": ["evil", "wickedness", "transgression"],
+    "forgive": ["forgiveness", "mercy"],
+    "save": ["salvation", "redeem"],
+}
 
-except Exception as e:
-    print("Knowledge index error:",e)
+def expand_semantic_words(words):
+    expanded = set(words)
 
-print("Knowledge loaded:",len(KNOWLEDGE))
+    for w in words:
+        if w in SEMANTIC_MAP:
+            expanded.update(SEMANTIC_MAP[w])
 
+    return list(expanded)
 
-# -------------------------
-# Search Knowledge
-# -------------------------
+# ================================
+# QUESTION CLEANING
+# ================================
 
-def search_knowledge(question):
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(r"[^\w\s]", "", text)
+    return text
 
-    question = question.lower()
+def extract_keywords(question):
+    words = clean_text(question).split()
+    return words
 
-    for item in KNOWLEDGE:
+# ================================
+# TOPIC MEMORY
+# ================================
 
-        keywords = item.get("keywords",[])
+last_topic = None
 
-        for word in keywords:
+def detect_topic(question):
 
-            if word.lower() in question:
-                return item
+    topics = {
+        "jesus": ["jesus", "christ"],
+        "salvation": ["save", "salvation"],
+        "love": ["love", "charity"],
+        "faith": ["faith", "believe"],
+    }
+
+    for topic, words in topics.items():
+        for w in words:
+            if w in question.lower():
+                return topic
 
     return None
 
+# ================================
+# VERSE SCORING
+# ================================
 
-# -------------------------
-# Search Bible (Exact)
-# -------------------------
+def semantic_bonus(text, keywords):
 
-def search_bible(question):
+    score = 0
+    text = text.lower()
 
-    question = question.lower()
+    for k in keywords:
+        if k in text:
+            score += 1
+
+    return score
+
+# ================================
+# SMART SEARCH
+# ================================
+
+def search_answer(question):
+
+    global last_topic
+
+    keywords = extract_keywords(question)
+
+    keywords = expand_semantic_words(keywords)
+
+    topic = detect_topic(question)
+
+    if topic:
+        last_topic = topic
 
     results = []
 
-    for verse in BIBLE_VERSES:
+    for item in knowledge_data:
 
-        text = verse["text"].lower()
+        text = item.get("answer", "").lower()
 
-        if question in text:
+        score = 0
 
-            results.append(verse)
+        for k in keywords:
+            if k in text:
+                score += 2
 
-        if len(results) >= 5:
-            break
+        score += semantic_bonus(text, keywords)
 
-    return results
+        if score > 0:
+            results.append((score, item))
 
+    results.sort(reverse=True, key=lambda x: x[0])
 
-# -------------------------
-# ADDED: Search Bible by keywords
-# -------------------------
+    answers = []
 
-def search_bible_keywords(question):
+    for r in results[:3]:
+        answers.append(r[1]["answer"])
 
-    words = question.lower().split()
+    if answers:
+        return "\n\n".join(answers)
 
-    results = []
+    return "No answer found."
 
-    for verse in BIBLE_VERSES:
+# ================================
+# BIBLE A TO Z READING
+# ================================
 
-        text = verse["text"].lower()
+bible_books = [
+    "Genesis","Exodus","Leviticus","Numbers","Deuteronomy",
+    "Joshua","Judges","Ruth","1 Samuel","2 Samuel",
+    "1 Kings","2 Kings","1 Chronicles","2 Chronicles",
+    "Ezra","Nehemiah","Esther","Job","Psalms","Proverbs",
+    "Ecclesiastes","Song of Solomon","Isaiah","Jeremiah",
+    "Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos",
+    "Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah",
+    "Haggai","Zechariah","Malachi",
+    "Matthew","Mark","Luke","John","Acts",
+    "Romans","1 Corinthians","2 Corinthians","Galatians",
+    "Ephesians","Philippians","Colossians","1 Thessalonians",
+    "2 Thessalonians","1 Timothy","2 Timothy","Titus",
+    "Philemon","Hebrews","James","1 Peter","2 Peter",
+    "1 John","2 John","3 John","Jude","Revelation"
+]
 
-        for word in words:
+reading_index = 0
 
-            if len(word) > 3 and word in text:
-                results.append(verse)
-                break
+def bible_read_next():
 
-        if len(results) >= 5:
-            break
+    global reading_index
 
-    return results
+    if reading_index >= len(bible_books):
+        reading_index = 0
 
+    book = bible_books[reading_index]
 
-# -------------------------
-# Ask Endpoint
-# -------------------------
+    reading_index += 1
+
+    return f"Next Bible Book: {book}"
+
+# ================================
+# API ROUTE
+# ================================
 
 @app.route("/ask", methods=["POST"])
 def ask():
 
-    data = request.get_json()
-
-    if not data:
-        return jsonify({"error":"No JSON body"}),400
+    data = request.json
 
     question = data.get("question","")
 
-    if question == "":
-        return jsonify({"error":"Empty question"}),400
+    if question.lower() == "read bible":
+        return jsonify({"answer": bible_read_next()})
 
-    # Knowledge search first
-    item = search_knowledge(question)
-
-    if item:
-
-        return jsonify({
-            "type":"knowledge",
-            "title":item.get("title",""),
-            "short_answer":item.get("short_answer",""),
-            "summary":item.get("summary",""),
-            "scripture_references":item.get("scripture_references",[]),
-            "major_points":item.get("major_points",[])
-        })
-
-
-    # Bible search (exact)
-    verses = search_bible(question)
-
-    if verses:
-
-        return jsonify({
-            "type":"bible",
-            "verses":verses
-        })
-
-
-    # ADDED: Bible keyword search
-    verses = search_bible_keywords(question)
-
-    if verses:
-
-        return jsonify({
-            "type":"bible",
-            "verses":verses
-        })
-
+    answer = search_answer(question)
 
     return jsonify({
-        "type":"unknown",
-        "message":"No answer found in Bible or knowledge."
+        "answer": answer,
+        "daily_verse": get_daily_verse()
     })
 
-
-# -------------------------
-# Health Check
-# -------------------------
+# ================================
+# HOME
+# ================================
 
 @app.route("/")
 def home():
 
     return jsonify({
-        "status":"Bible AI running",
-        "knowledge_loaded":len(KNOWLEDGE),
-        "bible_loaded":len(BIBLE_VERSES)
+        "message": "Bible AI running",
+        "daily_verse": get_daily_verse()
     })
 
-
-# -------------------------
-# Railway Start
-# -------------------------
+# ================================
+# START SERVER
+# ================================
 
 if __name__ == "__main__":
 
-    port = int(os.environ.get("PORT",8080))
+    port = int(os.environ.get("PORT", 5000))
 
-    app.run(host="0.0.0.0",port=port)
+    app.run(host="0.0.0.0", port=port)
