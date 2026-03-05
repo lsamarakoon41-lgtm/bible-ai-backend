@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Moses",
+    "keywords": ["moses", "who is moses", "moses in the bible", "leader of israel exodus"],
+    "content": "Moses was chosen by God to deliver the people of Israel from slavery in Egypt. Through him God performed great miracles, including the parting of the Red Sea. Moses received the Law from God on Mount Sinai and led Israel through the wilderness. He is one of the most important leaders in the Old Testament.",
+    "verses": ["Exodus 3:10", "Exodus 14:21", "Deuteronomy 34:10"]
+  },
+  {
+    "title": "David",
+    "keywords": ["king david", "who is david", "david in the bible", "shepherd king of israel"],
+    "content": "David was the second king of Israel and is described in Scripture as a man after God's own heart. He defeated Goliath, ruled Israel, and wrote many of the Psalms. God promised that the Messiah would come from David's royal lineage.",
+    "verses": ["1 Samuel 13:14", "1 Samuel 17:45-50", "2 Samuel 7:12"]
+  },
+  {
+    "title": "Paul the Apostle",
+    "keywords": ["apostle paul", "who is paul", "saul of tarsus", "paul conversion"],
+    "content": "Paul the Apostle was originally known as Saul of Tarsus and persecuted Christians before encountering the risen Jesus on the road to Damascus. After his conversion he became a missionary to the Gentiles and wrote many books of the New Testament explaining the Gospel and Christian doctrine.",
+    "verses": ["Acts 9:15", "Acts 9:3-6", "2 Timothy 4:7"]
+  }
+]

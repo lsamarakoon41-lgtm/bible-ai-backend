@@ -1,0 +1,27 @@
+[
+  {
+    "category": "Law",
+    "title": "The Ten Commandments",
+    "keywords": [
+      "ten commandments",
+      "moses law",
+      "god commandments",
+      "sin law"
+    ],
+    "short_answer": "The Ten Commandments are moral laws given by God to Israel through Moses.",
+    "summary": "God gave the Ten Commandments on Mount Sinai as part of His covenant with Israel.",
+    "scripture_references": [
+      "Exodus 20:1",
+      "Exodus 20:3",
+      "Deuteronomy 5:7"
+    ],
+    "historical_context": "The commandments formed the foundation of Israel's moral and spiritual law.",
+    "major_points": [
+      "Worship only one God",
+      "Honor God's name",
+      "Keep the Sabbath",
+      "Honor parents",
+      "Prohibitions against murder, adultery, theft, and false witness"
+    ]
+  }
+]

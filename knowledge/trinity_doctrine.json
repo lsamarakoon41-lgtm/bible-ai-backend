@@ -1,28 +1,37 @@
-[
-  {
-    "title": "Doctrine of the Trinity",
-    "keywords": [
-      "trinity","father son holy spirit",
-      "one god three persons","divinity of christ",
-      "holy spirit deity"
-    ],
-    "summary": "There is one God who eternally exists in three distinct Persons: Father, Son, and Holy Spirit. Each Person is fully God, yet there is one God.",
-    "scripture_references": [
-      "Deuteronomy 6:4",
-      "Matthew 28:19",
-      "John 1:1",
-      "John 10:30",
-      "Acts 5:3-4",
-      "2 Corinthians 13:14"
-    ],
-    "historical_context": "The doctrine was clarified in the early Church to defend the full deity of Christ and the Holy Spirit against heresies.",
-    "major_points": [
-      "God is one in essence",
-      "The Father is God",
-      "The Son is God",
-      "The Holy Spirit is God",
-      "The three Persons are distinct",
-      "The Trinity revealed progressively in Scripture"
-    ]
-  }
-]
+{
+  "category": "Doctrine",
+  "title": "Doctrine of the Trinity",
+  "keywords": [
+    "trinity",
+    "father son holy spirit",
+    "one god three persons",
+    "divinity of christ",
+    "holy spirit deity"
+  ],
+  "short_answer": "The Trinity teaches that one God exists eternally as three Persons: Father, Son, and Holy Spirit.",
+  "summary": "There is one God who eternally exists in three distinct Persons: Father, Son, and Holy Spirit. Each Person is fully God, yet there is one God.",
+  "explanation": "The Trinity teaches that there is only one God in essence, yet three distinct Persons: the Father, the Son, and the Holy Spirit. The Father is not the Son, the Son is not the Spirit, and the Spirit is not the Father. Yet each Person is fully God. This doctrine is revealed throughout Scripture and affirmed by the early church.",
+  "scripture_references": [
+    "Deuteronomy 6:4",
+    "Matthew 28:19",
+    "John 1:1",
+    "John 10:30",
+    "Acts 5:3-4",
+    "2 Corinthians 13:14"
+  ],
+  "historical_context": "The doctrine was clarified in the early Church to defend the full deity of Christ and the Holy Spirit against heresies.",
+  "major_points": [
+    "God is one in essence",
+    "The Father is God",
+    "The Son is God",
+    "The Holy Spirit is God",
+    "The three Persons are distinct",
+    "The Trinity revealed progressively in Scripture"
+  ],
+  "common_questions": [
+    "What is the Trinity?",
+    "Is the Trinity in the Bible?",
+    "Is the Trinity three gods?",
+    "Why do Christians believe in the Trinity?"
+  ]
+}

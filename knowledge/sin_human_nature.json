@@ -2,25 +2,19 @@
   {
     "title": "Doctrine of Sin and Human Nature",
     "keywords": [
-      "sin nature","original sin",
-      "fall of man","depravity",
+      "sin nature",
+      "original sin",
+      "fall of man",
+      "depravity",
       "need for salvation"
     ],
-    "summary": "All humanity inherited a sinful nature from Adam and is spiritually separated from God apart from Christ.",
-    "scripture_references": [
+    "content": "The Bible teaches that all humanity inherited a sinful nature through the fall of Adam. When Adam disobeyed God, sin entered the world and death spread to all people. Because of this, every human being is born with a sinful nature and is spiritually separated from God. Scripture describes the human heart as deeply corrupted and unable to achieve righteousness on its own. This condition makes salvation necessary. Only through Jesus Christ can humanity be forgiven and restored to a right relationship with God.",
+    "verses": [
       "Genesis 3:6-7",
       "Romans 3:23",
       "Romans 5:12",
       "Jeremiah 17:9",
       "Ephesians 2:1-3"
-    ],
-    "historical_context": "The fall of Adam introduced sin and death into the world, affecting all humanity.",
-    "major_points": [
-      "Adam’s fall brought sin",
-      "All humans are sinners by nature",
-      "Sin separates from God",
-      "Human heart is corrupt",
-      "Salvation is necessary"
     ]
   }
 ]

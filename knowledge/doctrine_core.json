@@ -1,121 +1,22 @@
-[
-  {
-    "category": "Gospel",
-    "title": "The Gospel and Atonement",
-    "core_verses": [
-      "1 Corinthians 15:3",
-      "1 Corinthians 15:4",
-      "Isaiah 53:5",
-      "2 Corinthians 5:21",
-      "Romans 3:25"
-    ],
-    "explanation": "The Gospel is the good news that Jesus Christ died for our sins according to the Scriptures, was buried, and rose again the third day. His death was substitutionary — He bore the penalty sinners deserved.",
-    "logical_reasoning": "God is just and must punish sin. Yet God is love and desires to save. The cross satisfies both justice and mercy: sin is punished in Christ, and sinners are forgiven through faith.",
-    "defense_response": "The atonement is not symbolic. Scripture teaches substitution (Isaiah 53:5), propitiation (Romans 3:25), and imputation (2 Corinthians 5:21)."
-  },
-  {
-    "category": "Salvation",
-    "title": "Salvation by Grace Through Faith",
-    "core_verses": [
-      "Ephesians 2:8",
-      "Ephesians 2:9",
-      "Romans 10:9",
-      "Acts 16:31",
-      "John 3:16"
-    ],
-    "explanation": "Salvation is a gift of God received by grace through faith, not by works. Repentance and belief in Christ bring justification before God.",
-    "logical_reasoning": "If salvation were by works, grace would not be grace. A perfect God requires perfect righteousness, which only Christ provides.",
-    "defense_response": "James 2 discusses evidence of faith, not earning salvation. Works demonstrate genuine faith but do not produce salvation."
-  },
-  {
-    "category": "Trinity",
-    "title": "Biblical Doctrine of the Trinity",
-    "core_verses": [
-      "Deuteronomy 6:4",
-      "Matthew 28:19",
-      "John 1:1",
-      "John 10:30",
-      "Acts 5:3"
-    ],
-    "explanation": "There is one God in three distinct Persons: Father, Son, and Holy Spirit. Each is fully God, yet there is one divine essence.",
-    "logical_reasoning": "Scripture affirms monotheism (Deut 6:4), affirms the deity of Christ (John 1:1), affirms the deity of the Spirit (Acts 5:3-4), and yet distinguishes persons (Matthew 28:19).",
-    "defense_response": "The Trinity is not three gods. It is one being with three persons. Modalism and Arianism contradict Scripture."
-  },
-  {
-    "category": "Christology",
-    "title": "Deity and Humanity of Christ",
-    "core_verses": [
-      "John 1:14",
-      "Colossians 2:9",
-      "Philippians 2:6",
-      "Hebrews 4:15"
-    ],
-    "explanation": "Jesus Christ is fully God and fully man. He took on human flesh while remaining divine.",
-    "logical_reasoning": "Only God can save, and only man can represent humanity. Therefore Christ must be both divine and human.",
-    "defense_response": "Jesus forgave sins, accepted worship, and existed before Abraham (John 8:58), proving divine identity."
-  },
-  {
-    "category": "Sin",
-    "title": "Sin and Human Nature",
-    "core_verses": [
-      "Romans 3:23",
-      "Romans 5:12",
-      "Jeremiah 17:9",
-      "Psalm 51:5"
-    ],
-    "explanation": "All humanity is fallen in Adam. Sin affects the heart and separates man from God.",
-    "logical_reasoning": "Universal moral failure proves universal corruption. A holy God cannot overlook sin without justice.",
-    "defense_response": "Human goodness does not erase guilt. Scripture declares all have sinned and need redemption."
-  },
-  {
-    "category": "Prophecy",
-    "title": "Messianic Prophecy Fulfillment",
-    "core_verses": [
-      "Isaiah 53:5",
-      "Micah 5:2",
-      "Psalm 22:16",
-      "Daniel 9:26"
-    ],
-    "explanation": "Old Testament prophecy predicted the Messiah's birth, death, and mission. Jesus fulfills these prophecies precisely.",
-    "logical_reasoning": "Prophecies written centuries before Christ align with His life, demonstrating divine authorship of Scripture.",
-    "defense_response": "The specificity of birthplace (Micah 5:2) and crucifixion imagery (Psalm 22) cannot be coincidence."
-  },
-  {
-    "category": "Resurrection",
-    "title": "Historical Resurrection of Christ",
-    "core_verses": [
-      "1 Corinthians 15:5",
-      "1 Corinthians 15:6",
-      "Luke 24:39",
-      "Acts 2:24"
-    ],
-    "explanation": "Jesus physically rose from the dead and appeared to many witnesses.",
-    "logical_reasoning": "The empty tomb, eyewitness testimony, and transformation of the apostles support the historical resurrection.",
-    "defense_response": "Hallucination theories fail because multiple group appearances occurred."
-  },
-  {
-    "category": "Scripture",
-    "title": "Authority and Inspiration of Scripture",
-    "core_verses": [
-      "2 Timothy 3:16",
-      "2 Peter 1:21",
-      "Psalm 119:160"
-    ],
-    "explanation": "All Scripture is inspired by God and is truth.",
-    "logical_reasoning": "A truthful God communicates truthfully. Scripture's unity across centuries confirms divine inspiration.",
-    "defense_response": "Apparent contradictions resolve through context and careful interpretation."
-  },
-  {
-    "category": "Eschatology",
-    "title": "Second Coming and Final Judgment",
-    "core_verses": [
-      "Acts 1:11",
-      "Revelation 20:12",
-      "1 Thessalonians 4:16",
-      "2 Peter 3:13"
-    ],
-    "explanation": "Christ will return bodily. There will be resurrection, judgment, and a new heaven and earth.",
-    "logical_reasoning": "Justice demands final accountability. God's promises guarantee restoration.",
-    "defense_response": "Symbolic interpretations cannot cancel clear teaching of bodily return."
-  }
-]
+{
+  "category": "Gospel",
+  "title": "The Gospel and Atonement",
+  "keywords": [
+    "gospel",
+    "why did jesus die",
+    "atonement",
+    "jesus died for our sins",
+    "meaning of the cross"
+  ],
+  "short_answer": "Jesus died as a substitute for sinners so that those who trust in Him may be forgiven and reconciled to God.",
+  "core_verses": [
+    "1 Corinthians 15:3",
+    "1 Corinthians 15:4",
+    "Isaiah 53:5",
+    "2 Corinthians 5:21",
+    "Romans 3:25"
+  ],
+  "explanation": "The Gospel is the good news that Jesus Christ died for our sins according to the Scriptures, was buried, and rose again the third day. His death was substitutionary — He bore the penalty sinners deserved.",
+  "logical_reasoning": "God is just and must punish sin. Yet God is love and desires to save. The cross satisfies both justice and mercy: sin is punished in Christ, and sinners are forgiven through faith.",
+  "defense_response": "The atonement is not symbolic. Scripture teaches substitution (Isaiah 53:5), propitiation (Romans 3:25), and imputation (2 Corinthians 5:21)."
+}

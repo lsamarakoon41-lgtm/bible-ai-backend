@@ -1,188 +1,288 @@
+from flask import Flask, request, jsonify
+import json
 import os
 import re
-import json
-import numpy as np
-from flask import Flask, request, jsonify
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+from collections import Counter
 
 app = Flask(__name__)
 
-KNOWLEDGE_FOLDER = "knowledge"
-BIBLE_FILE = "kjv.json"
+# =====================================================
+# CONFIG
+# =====================================================
 
-SEMANTIC_DATA = []
-VECTOR_TEXTS = []
-vectorizer = TfidfVectorizer(stop_words="english")
-tfidf_matrix = None
-
-bible_lookup = {}
-bible_list = []
-
-def load_knowledge():
-    global SEMANTIC_DATA, VECTOR_TEXTS, tfidf_matrix
-
-    for filename in os.listdir(KNOWLEDGE_FOLDER):
-        if filename.endswith(".json"):
-            path = os.path.join(KNOWLEDGE_FOLDER, filename)
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-
-                for entry in data:
-                    text_parts = []
-
-                    for key in ["title", "explanation", "logical_reasoning", "content", "text"]:
-                        if key in entry and entry[key]:
-                            text_parts.append(entry[key])
-
-                    combined_text = " ".join(text_parts)
-
-                    SEMANTIC_DATA.append({
-                        "data": entry,
-                        "combined_text": combined_text
-                    })
-
-                    VECTOR_TEXTS.append(combined_text)
-
-    if VECTOR_TEXTS:
-        tfidf_matrix = vectorizer.fit_transform(VECTOR_TEXTS)
-
-def load_bible():
-    global bible_lookup, bible_list
-
-    with open(BIBLE_FILE, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-        for verse in data:
-            key = verse["reference"].lower()
-            bible_lookup[key] = verse
-            bible_list.append(verse)
-
-SYNONYMS = {
-    "die": ["crucified", "death", "killed"],
-    "love": ["charity", "compassion"],
-    "sin": ["iniquity", "transgression"],
-    "bible": ["scripture", "word"],
-    "jesus": ["christ", "messiah", "son"]
+STOP_WORDS = {
+    "the","is","a","an","what","when","where","who","why","how",
+    "of","and","to","in","on","for","with","by","at","from"
 }
 
-def expand_question(question):
-    words = question.lower().split()
-    expanded = words.copy()
+MAX_VERSES = 5
 
-    for word in words:
-        if word in SYNONYMS:
-            expanded.extend(SYNONYMS[word])
+# =====================================================
+# TEXT CLEANING
+# =====================================================
 
-    return " ".join(expanded)
+def clean_text(text):
+    words = re.findall(r'\w+', text.lower())
+    return [w for w in words if w not in STOP_WORDS]
 
-def detect_intent(question):
+# =====================================================
+# LOAD BIBLE (PRE-INDEXED)
+# =====================================================
+
+with open("kjv.json", "r", encoding="utf-8") as f:
+    bible_data = json.load(f)
+
+indexed_verses = []
+bible_word_frequency = Counter()
+
+for book in bible_data:
+    for chapter in book["chapters"]:
+        for verse in chapter:
+            words = clean_text(verse["text"])
+
+            for w in words:
+                bible_word_frequency[w] += 1
+
+            indexed_verses.append({
+                "reference": f'{book["name"]} {verse["chapter"]}:{verse["verse"]}',
+                "text": verse["text"],
+                "words": words
+            })
+
+# =====================================================
+# LOAD KNOWLEDGE
+# =====================================================
+
+knowledge_folder = "knowledge"
+knowledge_data = {}
+knowledge_word_frequency = Counter()
+
+for filename in os.listdir(knowledge_folder):
+    if filename.endswith(".json"):
+
+        with open(os.path.join(knowledge_folder, filename), "r", encoding="utf-8") as f:
+            items = json.load(f)
+
+            for item in items:
+                content = item.get("content","")
+                title = item.get("title","")
+
+                content_words = clean_text(content)
+                title_words = clean_text(title)
+
+                for w in content_words + title_words:
+                    knowledge_word_frequency[w] += 1
+
+                item["clean_content"] = content_words
+                item["clean_title"] = title_words
+
+            knowledge_data[filename] = items
+
+# =====================================================
+# LOAD KNOWLEDGE INDEX (TOPIC ROUTER)
+# =====================================================
+
+with open("knowledge_index.json","r",encoding="utf-8") as f:
+    knowledge_index = json.load(f)
+
+# =====================================================
+# QUESTION TYPE DETECTION
+# =====================================================
+
+def detect_question_type(question):
     q = question.lower()
 
-    if re.search(r"\b\d+[:.]\d+\b", q):
-        return "verse_lookup"
+    if any(w in q for w in ["sin","forgive","marriage","wrong","should"]):
+        return "moral"
 
-    if "chapter" in q:
-        return "chapter_lookup"
+    if any(w in q for w in ["who","when","where","history"]):
+        return "history"
 
-    if any(w in q for w in ["who is", "what is", "define", "explain"]):
-        return "definition"
+    if any(w in q for w in ["prophecy","revelation","antichrist","end times"]):
+        return "prophecy"
 
-    if any(w in q for w in ["why", "reason"]):
-        return "reason"
-
-    if any(w in q for w in ["how"]):
-        return "process"
+    if any(w in q for w in ["grace","faith","salvation","justify","define","explain"]):
+        return "theology"
 
     return "general"
 
-def semantic_search(question):
-    if tfidf_matrix is None:
-        return None
+# =====================================================
+# TOPIC DETECTION (NEW)
+# =====================================================
 
-    query_vector = vectorizer.transform([question])
-    similarities = cosine_similarity(query_vector, tfidf_matrix)[0]
+def detect_topic(question_words):
 
-    top_indices = similarities.argsort()[-3:][::-1]
-
-    results = []
-    for idx in top_indices:
-        if similarities[idx] > 0.30:
-            results.append(SEMANTIC_DATA[idx]["data"])
-
-    return results if results else None
-
-def build_smart_answer(results, question):
-    response = ""
-
-    for entry in results:
-        for key in ["title", "explanation", "logical_reasoning", "content", "text"]:
-            if key in entry and entry[key]:
-                response += entry[key] + "\n\n"
-
-    words = question.lower().split()
-    best_verse = None
+    best_topic = None
     best_score = 0
 
-    for verse in bible_list:
-        score = sum(1 for w in words if w in verse["text"].lower())
+    for topic, keywords in knowledge_index.items():
+
+        score = 0
+
+        for w in question_words:
+            if w in keywords:
+                score += 1
+
         if score > best_score:
             best_score = score
-            best_verse = verse
+            best_topic = topic
 
-    if best_verse:
-        response += "Bible Verse:\n"
-        response += f"{best_verse['reference']}\n"
-        response += f"{best_verse['text']}\n\n"
+    return best_topic
 
-    response += "May the truth of Scripture guide you."
+# =====================================================
+# WORD IMPORTANCE
+# =====================================================
 
-    return response.strip()
+def word_importance(word, frequency_map):
+    freq = frequency_map.get(word,1)
+    return 1 / freq
+
+# =====================================================
+# KNOWLEDGE SEARCH
+# =====================================================
+
+def search_knowledge(question_words, question_type):
+
+    best_answer = None
+    highest_score = 0
+
+    for filename, items in knowledge_data.items():
+
+        weight = 3 if question_type in filename else 1
+
+        for item in items:
+
+            score = 0
+
+            for w in question_words:
+
+                if w in item["clean_content"]:
+                    score += word_importance(w, knowledge_word_frequency)
+
+                if w in item["clean_title"]:
+                    score += word_importance(w, knowledge_word_frequency) * 2
+
+            score *= weight
+
+            if score > highest_score:
+                highest_score = score
+                best_answer = item.get("content")
+
+    return best_answer, highest_score
+
+# =====================================================
+# BIBLE SEARCH
+# =====================================================
+
+def search_bible(question_words):
+
+    scored = []
+
+    for verse in indexed_verses:
+
+        score = 0
+
+        for w in question_words:
+
+            if w in verse["words"]:
+                score += word_importance(w, bible_word_frequency)
+
+        if score > 0:
+            scored.append((score, verse))
+
+    scored.sort(reverse=True, key=lambda x: x[0])
+
+    top = scored[:MAX_VERSES]
+
+    verses = [
+        {
+            "reference": v["reference"],
+            "text": v["text"]
+        }
+        for s, v in top
+    ]
+
+    total_score = sum([s for s,_ in top])
+
+    return verses, total_score
+
+# =====================================================
+# TONE PERSONALIZATION
+# =====================================================
+
+def apply_tone(answer, tone):
+
+    if tone == "encouragement":
+        return "Take heart. Scripture assures us that " + answer
+
+    elif tone == "academic":
+        return "Doctrinally speaking, " + answer
+
+    elif tone == "teaching":
+        return "According to the Holy Scriptures, " + answer
+
+    return answer
+
+# =====================================================
+# SUMMARY FORMAT
+# =====================================================
+
+def build_summary(answer, verses, confidence):
+
+    return {
+        "Explanation": answer,
+        "Biblical Support": verses,
+        "Confidence Score": round(confidence,2)
+    }
+
+# =====================================================
+# MAIN ROUTE
+# =====================================================
 
 @app.route("/ask", methods=["POST"])
 def ask():
+
     data = request.get_json()
-    question = data.get("question", "").strip()
+
+    question = data.get("question","")
+    tone = data.get("tone","default")
 
     if not question:
-        return jsonify({"text": "Please ask a question."})
+        return jsonify({"error":"No question provided"})
 
-    intent = detect_intent(question)
+    question_words = clean_text(question)
 
-    if intent == "verse_lookup":
-        key = question.lower()
-        verse = bible_lookup.get(key)
-        if verse:
-            text = f"{verse['reference']}\n{verse['text']}"
-            return jsonify({"text": text})
+    question_type = detect_question_type(question)
 
-    if intent == "chapter_lookup":
-        chapter_ref = question.lower().replace("chapter", "").strip()
-        formatted = ""
-        count = 0
+    topic = detect_topic(question_words)
 
-        for key, verse in bible_lookup.items():
-            if key.startswith(chapter_ref + ":"):
-                formatted += f"{verse['reference']}\n{verse['text']}\n\n"
-                count += 1
-                if count >= 40:
-                    break
+    knowledge_answer, knowledge_score = search_knowledge(
+        question_words,
+        topic or question_type
+    )
 
-        if formatted:
-            return jsonify({"text": formatted.strip()})
+    bible_verses, bible_score = search_bible(question_words)
 
-    expanded_q = expand_question(question)
-    results = semantic_search(expanded_q)
+    total_score = knowledge_score + bible_score
 
-    if results:
-        answer_text = build_smart_answer(results, question)
-        return jsonify({"text": answer_text})
+    confidence = min(100, total_score * 100)
 
-    return jsonify({"text": "I could not find a clear answer in Scripture. Please ask another question."})
+    if not knowledge_answer:
+        knowledge_answer = "No direct doctrinal explanation found in knowledge base."
 
-load_knowledge()
-load_bible()
+    final_answer = apply_tone(knowledge_answer, tone)
+
+    response = {
+        "type": question_type,
+        "topic": topic,
+        "result": build_summary(final_answer, bible_verses, confidence)
+    }
+
+    return jsonify(response)
+
+# =====================================================
+# RUN
+# =====================================================
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=5000)

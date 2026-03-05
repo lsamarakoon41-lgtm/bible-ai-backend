@@ -1,26 +1,45 @@
-[
-  {
-    "title": "Early Church Foundation",
-    "keywords": [
-      "early church","pentecost","acts 2",
-      "apostles","persecution","church growth"
-    ],
-    "summary": "The Early Church began at Pentecost after the resurrection and ascension of Jesus. It was built on apostolic teaching, fellowship, breaking of bread, and prayer.",
-    "scripture_references": [
-      "Acts 1:8",
-      "Acts 2:1-4",
-      "Acts 2:42",
-      "Acts 4:12",
-      "Acts 5:29"
-    ],
-    "historical_context": "The Church was established in Jerusalem under Roman rule and faced immediate persecution from Jewish authorities.",
-    "major_points": [
-      "Holy Spirit descended at Pentecost",
-      "Peter preached the first Gospel sermon",
-      "3000 were added in one day",
-      "Apostolic doctrine was central",
-      "Persecution strengthened the Church",
-      "Mission expanded beyond Jerusalem"
-    ]
-  }
-]
+{
+  "category": "Church History",
+  "title": "Early Church Foundation",
+  "keywords": [
+    "early church",
+    "pentecost",
+    "acts 2",
+    "apostles",
+    "persecution",
+    "church growth"
+  ],
+  "short_answer": "The early church began at Pentecost when the Holy Spirit came upon the apostles and they preached the Gospel.",
+  "summary": "The Early Church began at Pentecost after the resurrection and ascension of Jesus. It was built on apostolic teaching, fellowship, breaking of bread, and prayer.",
+  "explanation": "After Jesus ascended into heaven, the Holy Spirit came upon the apostles at Pentecost as promised. Peter preached the Gospel and about 3,000 people believed and were baptized. The early church devoted itself to the apostles' teaching, fellowship, breaking of bread, and prayer. Even though persecution arose, the church continued to grow and spread the message of Christ.",
+  "scripture_references": [
+    "Acts 1:8",
+    "Acts 2:1-4",
+    "Acts 2:42",
+    "Acts 4:12",
+    "Acts 5:29"
+  ],
+  "historical_context": "The Church was established in Jerusalem under Roman rule and faced immediate persecution from Jewish authorities.",
+  "major_points": [
+    "Holy Spirit descended at Pentecost",
+    "Peter preached the first Gospel sermon",
+    "3000 were added in one day",
+    "Apostolic doctrine was central",
+    "Persecution strengthened the Church",
+    "Mission expanded beyond Jerusalem"
+  ],
+  "timeline_events": [
+    "Jesus ascended into heaven",
+    "Holy Spirit came at Pentecost",
+    "Peter preached the first sermon",
+    "3000 people were baptized",
+    "Persecution began",
+    "Gospel spread beyond Jerusalem"
+  ],
+  "common_questions": [
+    "How did the early church start?",
+    "What happened at Pentecost?",
+    "Who led the early church?",
+    "Why was the early church persecuted?"
+  ]
+}
