@@ -1,7 +1,2 @@
-flask
-ollama
-langchain
-chromadb
-sentence-transformers
-pypdf
-python-dotenv
+Flask==3.0.0
+gunicorn==21.2.0
