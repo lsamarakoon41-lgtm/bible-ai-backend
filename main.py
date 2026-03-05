@@ -97,7 +97,7 @@ def search_knowledge(question):
 
 
 # -------------------------
-# Search Bible
+# Search Bible (Exact)
 # -------------------------
 
 def search_bible(question):
@@ -113,6 +113,32 @@ def search_bible(question):
         if question in text:
 
             results.append(verse)
+
+        if len(results) >= 5:
+            break
+
+    return results
+
+
+# -------------------------
+# ADDED: Search Bible by keywords
+# -------------------------
+
+def search_bible_keywords(question):
+
+    words = question.lower().split()
+
+    results = []
+
+    for verse in BIBLE_VERSES:
+
+        text = verse["text"].lower()
+
+        for word in words:
+
+            if len(word) > 3 and word in text:
+                results.append(verse)
+                break
 
         if len(results) >= 5:
             break
@@ -152,8 +178,19 @@ def ask():
         })
 
 
-    # Bible search
+    # Bible search (exact)
     verses = search_bible(question)
+
+    if verses:
+
+        return jsonify({
+            "type":"bible",
+            "verses":verses
+        })
+
+
+    # ADDED: Bible keyword search
+    verses = search_bible_keywords(question)
 
     if verses:
 
