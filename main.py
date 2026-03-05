@@ -26,30 +26,32 @@ def clean_text(text):
     return [w for w in words if w not in STOP_WORDS]
 
 # =====================================================
-# LOAD BIBLE (FIXED FOR YOUR JSON STRUCTURE)
+# LOAD BIBLE (PRE-INDEXED FOR SPEED)
 # =====================================================
 
-with open("kjv.json", "r", encoding="utf-8") as f:
+with open("KJV.json", "r", encoding="utf-8") as f:
     bible_data = json.load(f)
 
 indexed_verses = []
 bible_word_frequency = Counter()
 
-for reference, text in bible_data.items():
+for book in bible_data:
+    for chapter in book["chapters"]:
+        for verse in chapter:
 
-    words = clean_text(text)
+            words = clean_text(verse["text"])
 
-    for w in words:
-        bible_word_frequency[w] += 1
+            for w in words:
+                bible_word_frequency[w] += 1
 
-    indexed_verses.append({
-        "reference": reference,
-        "text": text,
-        "words": words
-    })
+            indexed_verses.append({
+                "reference": f'{book["name"]} {verse["chapter"]}:{verse["verse"]}',
+                "text": verse["text"],
+                "words": words
+            })
 
 # =====================================================
-# LOAD KNOWLEDGE
+# LOAD KNOWLEDGE (FIXED FOR YOUR STRUCTURE)
 # =====================================================
 
 knowledge_folder = "knowledge"
@@ -57,14 +59,29 @@ knowledge_data = {}
 knowledge_word_frequency = Counter()
 
 for filename in os.listdir(knowledge_folder):
+
     if filename.endswith(".json"):
 
         with open(os.path.join(knowledge_folder, filename), "r", encoding="utf-8") as f:
+
             items = json.load(f)
 
             for item in items:
-                content = item.get("content","")
+
                 title = item.get("title","")
+
+                content_parts = []
+
+                if "short_answer" in item:
+                    content_parts.append(item["short_answer"])
+
+                if "summary" in item:
+                    content_parts.append(item["summary"])
+
+                if "major_points" in item:
+                    content_parts.append(" ".join(item["major_points"]))
+
+                content = " ".join(content_parts)
 
                 content_words = clean_text(content)
                 title_words = clean_text(title)
@@ -74,21 +91,16 @@ for filename in os.listdir(knowledge_folder):
 
                 item["clean_content"] = content_words
                 item["clean_title"] = title_words
+                item["content"] = content
 
             knowledge_data[filename] = items
-
-# =====================================================
-# LOAD KNOWLEDGE INDEX (TOPIC ROUTER)
-# =====================================================
-
-with open("knowledge_index.json","r",encoding="utf-8") as f:
-    knowledge_index = json.load(f)
 
 # =====================================================
 # QUESTION TYPE DETECTION
 # =====================================================
 
 def detect_question_type(question):
+
     q = question.lower()
 
     if any(w in q for w in ["sin","forgive","marriage","wrong","should"]):
@@ -106,34 +118,13 @@ def detect_question_type(question):
     return "general"
 
 # =====================================================
-# TOPIC DETECTION
-# =====================================================
-
-def detect_topic(question_words):
-
-    best_topic = None
-    best_score = 0
-
-    for topic, keywords in knowledge_index.items():
-
-        score = 0
-
-        for w in question_words:
-            if w in keywords:
-                score += 1
-
-        if score > best_score:
-            best_score = score
-            best_topic = topic
-
-    return best_topic
-
-# =====================================================
 # WORD IMPORTANCE
 # =====================================================
 
 def word_importance(word, frequency_map):
-    freq = frequency_map.get(word,1)
+
+    freq = frequency_map.get(word, 1)
+
     return 1 / freq
 
 # =====================================================
@@ -201,7 +192,7 @@ def search_bible(question_words):
         for s, v in top
     ]
 
-    total_score = sum([s for s,_ in top])
+    total_score = sum([s for s, _ in top])
 
     return verses, total_score
 
@@ -220,7 +211,8 @@ def apply_tone(answer, tone):
     elif tone == "teaching":
         return "According to the Holy Scriptures, " + answer
 
-    return answer
+    else:
+        return answer
 
 # =====================================================
 # SUMMARY FORMAT
@@ -231,7 +223,7 @@ def build_summary(answer, verses, confidence):
     return {
         "Explanation": answer,
         "Biblical Support": verses,
-        "Confidence Score": round(confidence,2)
+        "Confidence Score": round(confidence, 2)
     }
 
 # =====================================================
@@ -253,12 +245,7 @@ def ask():
 
     question_type = detect_question_type(question)
 
-    topic = detect_topic(question_words)
-
-    knowledge_answer, knowledge_score = search_knowledge(
-        question_words,
-        topic or question_type
-    )
+    knowledge_answer, knowledge_score = search_knowledge(question_words, question_type)
 
     bible_verses, bible_score = search_bible(question_words)
 
@@ -273,7 +260,6 @@ def ask():
 
     response = {
         "type": question_type,
-        "topic": topic,
         "result": build_summary(final_answer, bible_verses, confidence)
     }
 
