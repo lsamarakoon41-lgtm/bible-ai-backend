@@ -29,7 +29,7 @@ def clean_text(text):
 # LOAD BIBLE (PRE-INDEXED FOR SPEED)
 # =====================================================
 
-with open("KJV.json", "r", encoding="utf-8") as f:
+with open("kjv.json", "r", encoding="utf-8") as f:
     bible_data = json.load(f)
 
 indexed_verses = []
