@@ -1,0 +1,28 @@
+[
+{
+"category": "Bible History",
+"title": "Creation",
+"keywords": ["creation","how world created","genesis creation"],
+"short_answer": "God created the heavens and the earth in the beginning.",
+"summary": "Genesis describes how God created the world, light, sky, land, animals, and humanity.",
+"scripture_references": ["Genesis 1:1"],
+"major_points": [
+"God created everything",
+"Creation shows God's power",
+"Humans created in God's image"
+]
+},
+{
+"category": "Bible History",
+"title": "The Flood",
+"keywords": ["noah flood","great flood","ark"],
+"short_answer": "God judged the earth with a flood but saved Noah and his family.",
+"summary": "Due to human wickedness God sent a flood but preserved Noah, his family, and animals in the ark.",
+"scripture_references": ["Genesis 6","Genesis 7","Genesis 8"],
+"major_points": [
+"Judgment on sin",
+"Noah found grace",
+"God preserved life"
+]
+}
+]

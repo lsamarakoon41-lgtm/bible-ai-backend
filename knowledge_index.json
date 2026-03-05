@@ -77,5 +77,11 @@
   "reference": [
     "biblical_characters_profiles.json",
     "world_religions_comparison.json"
+
+  "core":[
+  "jesus_teachings.json",
+  "bible_timeline.json",
+  "christian_topics.json",
+  "bible_questions.json"
   ]
 }
