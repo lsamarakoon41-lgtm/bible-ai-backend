@@ -1,30 +1,22 @@
-{
-  "category": "Christology",
-  "title": "Identity of Jesus Christ",
-  "keywords": [
-    "messiah",
-    "christ",
-    "son of god",
-    "son of man",
-    "logos",
-    "word made flesh",
-    "lamb of god",
-    "seed of david",
-    "king of kings"
-  ],
-  "short_answer": "Jesus Christ is the promised Messiah, the Son of God, and the eternal Word who became flesh to save humanity.",
-  "summary": "Jesus Christ is the promised Messiah, the Son of God, and the eternal Word who became flesh.",
-  "scripture_references": [
-    "John 1:1",
-    "John 1:14",
-    "Matthew 16:16",
-    "Isaiah 53:5"
-  ],
-  "historical_context": "Jewish expectation centered on a coming Messiah from David’s lineage who would bring salvation.",
-  "major_points": [
-    "Fulfillment of prophecy",
-    "Divine and human nature",
-    "Descendant of David",
-    "Role as Redeemer"
-  ]
-}
+[
+  {
+    "category": "Jesus Life",
+    "title": "Jesus Life",
+    "keywords": [
+      "jesus",
+      "life"
+    ],
+    "short_answer": "Jesus Life is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about jesus life using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about jesus life",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
+  }
+]

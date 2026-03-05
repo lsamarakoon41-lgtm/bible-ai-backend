@@ -1,20 +1,22 @@
 [
   {
-    "title": "Miracles of Jesus",
+    "category": "Jesus Miracles",
+    "title": "Jesus Miracles",
     "keywords": [
-      "miracles of jesus",
-      "jesus miracles",
-      "healing miracles",
-      "did jesus perform miracles",
-      "biblical miracles",
-      "jesus healing sick",
-      "jesus raising dead"
+      "jesus",
+      "miracles"
     ],
-    "content": "The Gospels record that Jesus performed many miracles during His ministry. These included healing the sick, restoring sight to the blind, casting out demons, calming storms, multiplying food, and even raising the dead. These miracles demonstrated His divine authority, compassion for people, and confirmation of His identity as the Son of God. The miracles were also signs pointing to the coming of God's kingdom.",
-    "verses": [
-      "Matthew 11:4-5",
-      "John 11:43-44",
-      "Mark 4:39"
+    "short_answer": "Jesus Miracles is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about jesus miracles using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about jesus miracles",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

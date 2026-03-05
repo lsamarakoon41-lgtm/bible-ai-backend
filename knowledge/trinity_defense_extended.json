@@ -1,26 +1,23 @@
 [
   {
-    "title": "Is the Trinity Biblical?",
-    "keywords": ["trinity biblical", "word trinity not in bible", "where is trinity in bible"],
-    "content": "The word 'Trinity' does not appear in the Bible, but the concept is clearly taught throughout Scripture. The Bible teaches that there is only one God, yet the Father, the Son, and the Holy Spirit are each described as fully divine. The Father is called God, Jesus is called God, and the Holy Spirit possesses divine attributes. These three persons share the same divine nature while remaining distinct in personhood. The doctrine of the Trinity is a theological summary of these biblical teachings.",
-    "verses": ["Matthew 28:19", "2 Corinthians 13:14", "Deuteronomy 6:4", "John 1:1"]
-  },
-  {
-    "title": "Is Jesus Truly God?",
-    "keywords": ["is jesus god", "jesus divinity proof", "jesus claim to be god"],
-    "content": "The New Testament clearly teaches that Jesus Christ is fully God. Jesus claimed divine authority, forgave sins, accepted worship, and declared unity with the Father. The Gospel of John states that 'the Word was God' and later reveals that the Word became flesh in Jesus Christ. Jesus also used the divine name when He said 'Before Abraham was, I AM,' echoing God's name revealed in the Old Testament. The apostles also affirmed His divinity and worshiped Him as Lord.",
-    "verses": ["John 1:1", "John 8:58", "John 10:30", "Colossians 2:9", "Hebrews 1:8"]
-  },
-  {
-    "title": "Is the Holy Spirit God?",
-    "keywords": ["holy spirit god", "divinity of holy spirit"],
-    "content": "The Holy Spirit is described in the Bible as fully divine. The Spirit possesses attributes that belong only to God, including omniscience, omnipresence, and power in creation and regeneration. In the book of Acts, lying to the Holy Spirit is described as lying to God, showing that the Spirit shares the same divine nature. The Holy Spirit also inspired the writing of Scripture and continues to work in the lives of believers.",
-    "verses": ["Acts 5:3-4", "1 Corinthians 2:10-11", "Genesis 1:2", "2 Peter 1:21"]
-  },
-  {
-    "title": "Is the Trinity Three Gods?",
-    "keywords": ["three gods", "polytheism", "is trinity polytheism"],
-    "content": "Christianity does not teach three gods. The Bible clearly teaches that there is only one God. The doctrine of the Trinity explains that the one divine nature exists eternally in three persons: the Father, the Son, and the Holy Spirit. These persons are distinct yet perfectly united in essence and purpose. This teaching preserves both the unity of God and the full divinity of the Father, Son, and Holy Spirit.",
-    "verses": ["Isaiah 45:5", "John 17:21", "Deuteronomy 6:4"]
+    "category": "Trinity Defense Extended",
+    "title": "Trinity Defense Extended",
+    "keywords": [
+      "trinity",
+      "defense",
+      "extended"
+    ],
+    "short_answer": "Trinity Defense Extended is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about trinity defense extended using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about trinity defense extended",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
   }
 ]

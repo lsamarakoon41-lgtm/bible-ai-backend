@@ -1,112 +1,23 @@
 [
   {
-    "title": "Doctrinal Defense of the Gospel",
+    "category": "Gospel Defense Core",
+    "title": "Gospel Defense Core",
     "keywords": [
-      "gospel defense",
-      "what is the gospel",
-      "substitutionary atonement",
-      "justification by faith",
-      "resurrection proof",
-      "grace not works"
+      "gospel",
+      "defense",
+      "core"
     ],
-    "content": "The Gospel is the good news that Jesus Christ died for sins, was buried, and rose again on the third day according to the Scriptures. All humanity is sinful and separated from God, but Jesus died as a substitutionary sacrifice to bear the penalty of sin. Through His death and resurrection, forgiveness and reconciliation with God are made possible. Salvation is received by grace through faith and not by human works. The resurrection of Jesus confirms the truth of the Gospel and the victory over sin and death.",
-    "verses": [
-      "1 Corinthians 15:1-4",
-      "Romans 3:23-26",
-      "Romans 5:8",
-      "Ephesians 2:8-9",
-      "Isaiah 53",
-      "2 Corinthians 5:21"
-    ]
-  },
-  {
-    "title": "Biblical Defense of the Trinity",
-    "keywords": [
-      "trinity defense",
-      "is trinity biblical",
-      "father son holy spirit",
-      "deity of christ",
-      "holy spirit is god"
-    ],
-    "content": "The Bible teaches that there is one God who exists eternally in three distinct Persons: the Father, the Son, and the Holy Spirit. The Father is called God, the Son is called God, and the Holy Spirit is called God, yet Scripture affirms there is only one God. The three Persons share the same divine nature while remaining distinct in personhood. This doctrine, known as the Trinity, summarizes the biblical teaching about God's nature.",
-    "verses": [
-      "Deuteronomy 6:4",
-      "Matthew 28:19",
-      "John 1:1",
-      "John 10:30",
-      "Acts 5:3-4",
-      "Hebrews 1:8"
-    ]
-  },
-  {
-    "title": "Defense of Messianic Prophecy Fulfillment",
-    "keywords": [
-      "prophecy defense",
-      "messianic prophecy",
-      "isaiah 53 fulfillment",
-      "psalm 22 fulfilled",
-      "bethlehem prophecy"
-    ],
-    "content": "Jesus fulfilled numerous Old Testament prophecies written centuries before His birth. These prophecies described the Messiah's birth, life, suffering, death, and resurrection. The Messiah was foretold to be born in Bethlehem, born of a virgin, descend from David, suffer for the sins of the people, and be pierced. The fulfillment of these prophecies in the life of Jesus confirms His identity as the promised Messiah.",
-    "verses": [
-      "Micah 5:2",
-      "Isaiah 7:14",
-      "Isaiah 53",
-      "Psalm 22",
-      "Daniel 9:24-26",
-      "Zechariah 12:10"
-    ]
-  },
-  {
-    "title": "Historical Reliability of the Gospel Accounts",
-    "keywords": [
-      "historical reliability",
-      "manuscript evidence",
-      "early creed",
-      "empty tomb",
-      "eyewitness testimony"
-    ],
-    "content": "The Gospel accounts are supported by early eyewitness testimony and reliable manuscript transmission. The apostle Paul recorded an early creed about the resurrection of Jesus within years of the crucifixion, affirming that many witnesses saw the risen Christ. The crucifixion of Jesus was a public historical event under Roman authority, and the empty tomb was reported by multiple sources. These factors strengthen the historical reliability of the Gospel message.",
-    "verses": [
-      "Luke 1:1-4",
-      "1 Corinthians 15:3-8",
-      "2 Peter 1:16",
-      "John 19:35"
-    ]
-  },
-  {
-    "title": "Biblical Salvation Clarification",
-    "keywords": [
-      "how to be saved",
-      "faith alone",
-      "repentance",
-      "born again",
-      "eternal life"
-    ],
-    "content": "Salvation is the gift of eternal life given by God through faith in Jesus Christ. It is not earned through human works but received by grace. Those who repent of their sins and trust in Jesus Christ as Lord and Savior are forgiven and reconciled to God. Through salvation, believers receive new spiritual life and the promise of eternal life with God.",
-    "verses": [
+    "short_answer": "Gospel Defense Core is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about gospel defense core using references from the Bible.",
+    "scripture_references": [
       "John 3:16",
-      "Acts 4:12",
-      "Romans 10:9-10",
-      "Ephesians 2:8-9",
-      "Titus 3:5"
-    ]
-  },
-  {
-    "title": "Logical Apologetic Responses Based on Scripture",
-    "keywords": [
-      "apologetics defense",
-      "contradictions in bible",
-      "is jesus god",
-      "is resurrection real",
-      "faith and reason"
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
-    "content": "The Bible encourages believers to give a reasoned defense of the faith. Christianity is based on historical events and eyewitness testimony, especially the resurrection of Jesus Christ. The apostles openly proclaimed the Gospel and invited examination of their claims. Faith in Christianity is not blind belief but trust grounded in historical evidence, fulfilled prophecy, and the testimony of Scripture.",
-    "verses": [
-      "1 Peter 3:15",
-      "Isaiah 1:18",
-      "John 20:27",
-      "Acts 26:25"
+    "major_points": [
+      "Biblical teaching about gospel defense core",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

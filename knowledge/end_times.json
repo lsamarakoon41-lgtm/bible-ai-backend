@@ -1,24 +1,22 @@
 [
   {
-    "category": "Eschatology",
+    "category": "End Times",
     "title": "End Times",
     "keywords": [
-      "end times",
-      "last days",
-      "return of christ"
+      "end",
+      "times"
     ],
-    "short_answer": "The Bible teaches that history will culminate in the return of Jesus Christ.",
-    "summary": "End times teaching includes Christ's return, resurrection, judgment, and the renewal of creation.",
+    "short_answer": "End Times is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about end times using references from the Bible.",
     "scripture_references": [
-      "Matthew 24:30",
-      "1 Thessalonians 4:16",
-      "Revelation 22:12"
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
     "major_points": [
-      "Jesus will return",
-      "Resurrection of the dead",
-      "Final judgment",
-      "God will restore creation"
+      "Biblical teaching about end times",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

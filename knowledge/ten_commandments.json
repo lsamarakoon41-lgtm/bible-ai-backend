@@ -1,27 +1,22 @@
 [
   {
-    "category": "Law",
-    "title": "The Ten Commandments",
+    "category": "Ten Commandments",
+    "title": "Ten Commandments",
     "keywords": [
-      "ten commandments",
-      "moses law",
-      "god commandments",
-      "sin law"
+      "ten",
+      "commandments"
     ],
-    "short_answer": "The Ten Commandments are moral laws given by God to Israel through Moses.",
-    "summary": "God gave the Ten Commandments on Mount Sinai as part of His covenant with Israel.",
+    "short_answer": "Ten Commandments is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about ten commandments using references from the Bible.",
     "scripture_references": [
-      "Exodus 20:1",
-      "Exodus 20:3",
-      "Deuteronomy 5:7"
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
-    "historical_context": "The commandments formed the foundation of Israel's moral and spiritual law.",
     "major_points": [
-      "Worship only one God",
-      "Honor God's name",
-      "Keep the Sabbath",
-      "Honor parents",
-      "Prohibitions against murder, adultery, theft, and false witness"
+      "Biblical teaching about ten commandments",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

@@ -1,30 +1,22 @@
 [
- {
-  "category": "Eschatology",
-  "title": "End Times and Eschatology Doctrine",
-  "keywords": [
-   "end times",
-   "eschatology",
-   "last days",
-   "second coming",
-   "final judgment"
-  ],
-  "short_answer": "Eschatology is the biblical teaching about the last days, including the return of Christ, resurrection, judgment, and the new heaven and earth.",
-
-  "summary": "The Bible teaches that history will culminate in the return of Jesus Christ. The dead will be raised, all people will face judgment, and God will establish a new heaven and a new earth.",
-
-  "scripture_references": [
-   "Matthew 24:30",
-   "1 Thessalonians 4:16",
-   "Revelation 20:12",
-   "Revelation 21:1"
-  ],
-
-  "major_points": [
-   "Jesus will return",
-   "The dead will be resurrected",
-   "There will be final judgment",
-   "God will create a new heaven and earth"
-  ]
- }
+  {
+    "category": "Eschatology Doctrine",
+    "title": "Eschatology Doctrine",
+    "keywords": [
+      "eschatology",
+      "doctrine"
+    ],
+    "short_answer": "Eschatology Doctrine is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about eschatology doctrine using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about eschatology doctrine",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
+  }
 ]

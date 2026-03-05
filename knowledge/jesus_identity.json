@@ -1,28 +1,22 @@
 [
-{
-"title": "Who is Jesus Christ",
-"keywords": [
-"who is jesus",
-"jesus christ",
-"son of god",
-"messiah",
-"savior",
-"who is jesus christ"
-],
-"short_answer": "Jesus Christ is the Son of God and the Savior of the world who came to save humanity from sin.",
-"summary": "Jesus Christ is the central figure of Christianity. Christians believe He is the Son of God who became human, lived a sinless life, performed miracles, taught about God's kingdom, died on the cross for the sins of humanity, and rose again on the third day.",
-"scripture_references": [
-"John 1:1",
-"John 3:16",
-"Luke 2:11",
-"Matthew 16:16"
-],
-"major_points": [
-"Jesus is the Son of God",
-"He fulfilled Old Testament prophecies",
-"He lived a sinless life",
-"He died for the sins of the world",
-"He rose again from the dead"
-]
-}
+  {
+    "category": "Jesus Identity",
+    "title": "Jesus Identity",
+    "keywords": [
+      "jesus",
+      "identity"
+    ],
+    "short_answer": "Jesus Identity is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about jesus identity using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about jesus identity",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
+  }
 ]

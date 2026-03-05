@@ -1,22 +1,23 @@
 [
   {
-    "title": "Christianity vs Islam",
-    "content": "Christianity teaches that Jesus is the Son of God who was crucified and resurrected for the salvation of humanity. Islam teaches that Jesus was a prophet and denies His crucifixion and divinity. The core difference centers on the identity of Jesus and the means of salvation.",
-    "verses": ["John 14:6", "1 Corinthians 15:3-4"]
-  },
-  {
-    "title": "Christianity vs Hinduism",
-    "content": "Christianity teaches one personal God and salvation by grace through faith. Hinduism includes a wide range of beliefs, often involving multiple deities and the cycle of rebirth governed by karma. Christianity teaches resurrection and eternal life rather than reincarnation.",
-    "verses": ["Hebrews 9:27", "Ephesians 2:8-9"]
-  },
-  {
-    "title": "Christianity vs Buddhism",
-    "content": "Buddhism generally does not focus on a personal Creator God and seeks enlightenment through personal effort and detachment from desire. Christianity teaches relationship with a personal God and salvation through Christ rather than self-enlightenment.",
-    "verses": ["John 17:3"]
-  },
-  {
-    "title": "Is Christianity Exclusive?",
-    "content": "Christianity teaches that salvation is found uniquely in Jesus Christ. This exclusivity is based on the belief that Christ alone atoned for sin and conquered death through His resurrection.",
-    "verses": ["Acts 4:12", "John 14:6"]
+    "category": "World Religions Comparison",
+    "title": "World Religions Comparison",
+    "keywords": [
+      "world",
+      "religions",
+      "comparison"
+    ],
+    "short_answer": "World Religions Comparison is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about world religions comparison using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about world religions comparison",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
   }
 ]

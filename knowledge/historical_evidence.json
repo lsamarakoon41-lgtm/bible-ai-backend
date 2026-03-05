@@ -1,22 +1,22 @@
 [
   {
-    "title": "Historical Evidence and Reliability of the New Testament",
+    "category": "Historical Evidence",
+    "title": "Historical Evidence",
     "keywords": [
-      "historical evidence new testament",
-      "is the new testament reliable",
-      "manuscript reliability",
-      "tacitus jesus",
-      "josephus jesus",
-      "pliny the younger christians",
-      "dead sea scrolls bible",
-      "early creed resurrection",
-      "empty tomb evidence"
+      "historical",
+      "evidence"
     ],
-    "content": "The New Testament is supported by strong historical evidence and early documentation. One of the earliest Christian creeds appears in 1 Corinthians 15:3–8, which many scholars date within a few years of Jesus' crucifixion, affirming His death, burial, and resurrection. Non-biblical historians also reference Jesus. Roman historian Tacitus recorded that Jesus was executed under Pontius Pilate during the reign of Tiberius. Jewish historian Josephus also mentioned Jesus and early Christians. Pliny the Younger described Christians worshiping Christ as God in the early second century. Additionally, thousands of ancient Greek manuscripts support the textual reliability of the New Testament. Archaeological discoveries such as the Dead Sea Scrolls confirm the preservation and accuracy of biblical texts. The empty tomb and eyewitness testimony recorded in the Gospels further support the historical claim of Jesus’ resurrection.",
-    "verses": [
-      "1 Corinthians 15:3-8",
-      "Luke 1:1-4",
-      "2 Peter 1:16"
+    "short_answer": "Historical Evidence is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about historical evidence using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about historical evidence",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

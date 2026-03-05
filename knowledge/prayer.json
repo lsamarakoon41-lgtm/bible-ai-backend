@@ -1,25 +1,21 @@
 [
   {
-    "category": "Christian Life",
+    "category": "Prayer",
     "title": "Prayer",
     "keywords": [
-      "prayer",
-      "how to pray",
-      "talk to god",
-      "lord prayer"
+      "prayer"
     ],
-    "short_answer": "Prayer is communication with God through praise, thanksgiving, confession, and requests.",
-    "summary": "Jesus taught His followers to pray sincerely and trust God as their Father.",
+    "short_answer": "Prayer is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about prayer using references from the Bible.",
     "scripture_references": [
-      "Matthew 6:9",
-      "Philippians 4:6",
-      "1 Thessalonians 5:17"
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
-    "historical_context": "Prayer has been central in Jewish and Christian worship traditions.",
     "major_points": [
-      "Communication with God",
-      "Includes praise and requests",
-      "Requires faith and humility"
+      "Biblical teaching about prayer",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

@@ -1,28 +1,22 @@
 [
   {
-    "title": "Atonement and Salvation Doctrine",
+    "category": "Salvation Doctrine",
+    "title": "Salvation Doctrine",
     "keywords": [
-      "atonement",
       "salvation",
-      "justification",
-      "grace",
-      "faith",
-      "repentance",
-      "substitutionary sacrifice",
-      "blood of christ",
-      "imputation",
-      "regeneration",
-      "how jesus saves",
-      "why jesus died"
+      "doctrine"
     ],
-    "content": "The Bible teaches that salvation is accomplished through the atoning work of Jesus Christ. All humanity has sinned and stands guilty before God. Jesus Christ came as the Lamb of God and offered Himself as a substitutionary sacrifice for sin. Through His death on the cross, He bore the penalty that sinners deserved. Salvation is received by grace through faith and not by human works. When a person believes in Christ, God justifies that person by declaring them righteous based on the righteousness of Christ. This righteousness is credited to the believer, a doctrine known as imputation. Through the work of the Holy Spirit, believers experience regeneration and repentance, resulting in reconciliation with God.",
-    "verses": [
-      "Isaiah 53",
-      "Romans 3:23-26",
-      "Romans 5:8",
-      "Ephesians 2:8-9",
-      "2 Corinthians 5:21",
-      "1 Peter 2:24"
+    "short_answer": "Salvation Doctrine is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about salvation doctrine using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about salvation doctrine",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

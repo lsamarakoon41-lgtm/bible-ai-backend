@@ -1,76 +1,22 @@
 [
   {
-    "category": "Parables of Jesus",
-    "title": "Parable of the Good Samaritan",
+    "category": "Jesus Parables",
+    "title": "Jesus Parables",
     "keywords": [
-      "good samaritan",
-      "love neighbor",
-      "help others"
+      "jesus",
+      "parables"
     ],
-    "summary": "Jesus told the story of a Samaritan who helped a wounded man when others passed by. The parable teaches that loving one's neighbor means showing mercy and compassion to anyone in need.",
+    "short_answer": "Jesus Parables is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about jesus parables using references from the Bible.",
     "scripture_references": [
-      "Luke 10:25-37"
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
     "major_points": [
-      "A man was attacked by robbers",
-      "A priest and Levite ignored him",
-      "A Samaritan helped him",
-      "True neighborly love shows mercy"
-    ]
-  },
-  {
-    "category": "Parables of Jesus",
-    "title": "Parable of the Prodigal Son",
-    "keywords": [
-      "prodigal son",
-      "lost son",
-      "forgiveness story"
-    ],
-    "summary": "Jesus told of a son who left his father, wasted his inheritance, and later returned in repentance. The father welcomed him back with joy, showing God's mercy toward sinners who repent.",
-    "scripture_references": [
-      "Luke 15:11-32"
-    ],
-    "major_points": [
-      "The son asked for his inheritance",
-      "He wasted everything",
-      "He returned in repentance",
-      "The father forgave and welcomed him"
-    ]
-  },
-  {
-    "category": "Parables of Jesus",
-    "title": "Parable of the Lost Sheep",
-    "keywords": [
-      "lost sheep",
-      "god seeks sinners"
-    ],
-    "summary": "Jesus compared God's love to a shepherd who leaves ninety-nine sheep to find one that is lost.",
-    "scripture_references": [
-      "Luke 15:3-7"
-    ],
-    "major_points": [
-      "One sheep becomes lost",
-      "The shepherd searches for it",
-      "He rejoices when it is found",
-      "God rejoices when sinners repent"
-    ]
-  },
-  {
-    "category": "Parables of Jesus",
-    "title": "Parable of the Sower",
-    "keywords": [
-      "parable of the sower",
-      "seed and soil"
-    ],
-    "summary": "Jesus taught that God's Word is like seed falling on different types of soil representing different responses of people's hearts.",
-    "scripture_references": [
-      "Matthew 13:1-23"
-    ],
-    "major_points": [
-      "Seed on the path",
-      "Seed on rocky ground",
-      "Seed among thorns",
-      "Seed on good soil"
+      "Biblical teaching about jesus parables",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

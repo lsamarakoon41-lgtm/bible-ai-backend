@@ -1,77 +1,23 @@
 [
   {
-    "title": "What Is Salvation?",
+    "category": "Salvation Theology Extended",
+    "title": "Salvation Theology Extended",
     "keywords": [
-      "what is salvation",
-      "meaning of salvation",
-      "how are we saved",
-      "how to be saved",
-      "how to get saved",
-      "saved by grace",
-      "eternal life"
+      "salvation",
+      "theology",
+      "extended"
     ],
-    "content": "Salvation in Christianity means deliverance from sin and its consequences through faith in Jesus Christ. It includes forgiveness of sins, reconciliation with God, and the gift of eternal life. Salvation is a work of God's grace received by faith.",
-    "verses": ["Ephesians 2:8-9", "Titus 3:5", "John 3:16"]
-  },
-  {
-    "title": "Repentance and Faith",
-    "keywords": [
-      "repentance",
-      "what is repentance",
-      "faith in jesus",
-      "believe in christ",
-      "turn from sin",
-      "repent and believe"
+    "short_answer": "Salvation Theology Extended is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about salvation theology extended using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
-    "content": "Repentance means turning away from sin and turning toward God. Faith is trusting in Jesus Christ as Lord and Savior. Genuine repentance and faith go together as responses to the Gospel.",
-    "verses": ["Acts 3:19", "Romans 10:9-10"]
-  },
-  {
-    "title": "Justification",
-    "keywords": [
-      "justification",
-      "justified by faith",
-      "righteousness of christ",
-      "declared righteous",
-      "justification by faith"
-    ],
-    "content": "Justification is God's declaration that a sinner is righteous based on the finished work of Christ. It is not earned by works but granted through faith. Christ's righteousness is credited to believers.",
-    "verses": ["Romans 5:1", "2 Corinthians 5:21", "Galatians 2:16"]
-  },
-  {
-    "title": "Regeneration",
-    "keywords": [
-      "born again",
-      "regeneration",
-      "new birth",
-      "spiritual rebirth",
-      "what does born again mean"
-    ],
-    "content": "Regeneration is the spiritual new birth brought about by the Holy Spirit. It transforms the heart and gives new spiritual life. Jesus described this as being 'born again.'",
-    "verses": ["John 3:3-6", "2 Corinthians 5:17"]
-  },
-  {
-    "title": "Sanctification",
-    "keywords": [
-      "sanctification",
-      "growing in holiness",
-      "spiritual growth",
-      "becoming holy",
-      "christian growth"
-    ],
-    "content": "Sanctification is the ongoing process by which believers grow in holiness and Christlikeness. It begins at salvation and continues throughout the Christian life through the work of the Holy Spirit.",
-    "verses": ["1 Thessalonians 4:3", "Philippians 1:6"]
-  },
-  {
-    "title": "Glorification",
-    "keywords": [
-      "glorification",
-      "resurrection body",
-      "future glory",
-      "final salvation",
-      "new glorified body"
-    ],
-    "content": "Glorification is the final stage of salvation when believers are fully transformed and receive resurrected bodies. It will occur at Christ's return and marks the completion of redemption.",
-    "verses": ["Romans 8:30", "1 Corinthians 15:52-53"]
+    "major_points": [
+      "Biblical teaching about salvation theology extended",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
   }
 ]

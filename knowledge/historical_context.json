@@ -1,33 +1,22 @@
 [
   {
-    "title": "Roman Crucifixion",
+    "category": "Historical Context",
+    "title": "Historical Context",
     "keywords": [
-      "roman crucifixion",
-      "how romans executed criminals",
-      "cross punishment",
-      "crucifixion method",
-      "roman execution cross"
+      "historical",
+      "context"
     ],
-    "content": "Roman crucifixion was one of the most brutal methods of execution used by the Roman Empire. It was typically reserved for slaves, rebels, and the worst criminals. Victims were often flogged first, then forced to carry the crossbeam to the execution site. They were nailed or tied to a wooden cross and left to die slowly from exhaustion, suffocation, dehydration, and blood loss. Crucifixion was intentionally public and humiliating as a warning to others. Jesus Christ was executed by crucifixion under the Roman governor Pontius Pilate.",
-    "verses": [
-      "Matthew 27:35",
-      "Mark 15:24",
-      "Luke 23:33",
-      "John 19:18"
-    ]
-  },
-  {
-    "title": "Pharisees",
-    "keywords": [
-      "pharisees",
-      "jewish religious leaders",
-      "pharisees in jesus time",
-      "religious leaders in the gospels"
+    "short_answer": "Historical Context is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about historical context using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
-    "content": "The Pharisees were a prominent Jewish religious group during the time of Jesus. They were known for their strict interpretation and observance of the Mosaic Law and the traditions of the elders. While they sought to preserve religious purity, Jesus often criticized them for hypocrisy and focusing on external religious practices while neglecting justice, mercy, and faithfulness. Many Pharisees opposed Jesus and challenged His authority during His ministry.",
-    "verses": [
-      "Matthew 23:1-36",
-      "Luke 11:39-44"
+    "major_points": [
+      "Biblical teaching about historical context",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

@@ -1,47 +1,23 @@
 [
   {
-    "topic": "Cosmological Argument",
+    "category": "Existence Of God Arguments",
+    "title": "Existence Of God Arguments",
     "keywords": [
-      "why universe exist",
-      "first cause",
-      "cosmological argument",
-      "who created universe"
+      "existence",
+      "of",
+      "god"
     ],
-    "text": "The cosmological argument observes that everything that begins to exist has a cause. The universe began to exist, which means it must have a cause beyond itself. This cause must be timeless, spaceless, and powerful enough to create the universe. Christianity identifies this first cause as God, the eternal Creator who brought the universe into existence.",
-    "verses": [
-      "Genesis 1:1",
-      "Hebrews 3:4",
-      "John 1:3"
-    ]
-  },
-  {
-    "topic": "Moral Argument",
-    "keywords": [
-      "objective morality",
-      "moral lawgiver",
-      "right and wrong from where",
-      "where morality come from"
+    "short_answer": "Existence Of God Arguments is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about existence of god arguments using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
-    "text": "The moral argument states that if objective moral values truly exist, there must be a moral lawgiver who establishes them. Humans across cultures recognize certain actions as truly right or wrong beyond personal preference. Christianity teaches that God's holy nature is the foundation of moral truth and that human conscience reflects His moral law.",
-    "verses": [
-      "Romans 2:15",
-      "Psalm 19:7",
-      "Isaiah 33:22"
-    ]
-  },
-  {
-    "topic": "Design Argument",
-    "keywords": [
-      "intelligent design",
-      "fine tuning",
-      "complexity life",
-      "evidence for creator"
-    ],
-    "text": "The design argument points to the complexity and fine-tuning of the universe. The laws of physics, the conditions required for life, and the complexity of biological systems suggest intentional design rather than random chance. Christianity teaches that the universe reflects the wisdom and power of its Creator.",
-    "verses": [
-      "Psalm 19:1",
-      "Romans 1:20",
-      "Isaiah 40:26"
+    "major_points": [
+      "Biblical teaching about existence of god arguments",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]

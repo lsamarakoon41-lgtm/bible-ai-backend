@@ -1,14 +1,23 @@
 [
   {
-    "title": "Why Did God Command Wars in the Old Testament?",
-    "keywords": ["god command war", "violence in bible", "old testament wars", "divine judgment"],
-    "content": "The Old Testament records specific historical events where God commanded Israel to wage war against certain nations. These actions are presented as acts of divine judgment against extreme wickedness such as idolatry, violence, and moral corruption. These commands occurred within a particular covenant and historical context and were not general commands for all people at all times.",
-    "verses": ["Deuteronomy 9:5"]
-  },
-  {
-    "title": "Are There Contradictions in the Bible?",
-    "keywords": ["bible contradictions", "errors in bible", "is the bible consistent"],
-    "content": "Many alleged contradictions in the Bible arise from misunderstanding context, literary style, translation differences, or historical background. Christians believe that Scripture is inspired by God and internally consistent when interpreted carefully and in context.",
-    "verses": ["2 Timothy 3:16"]
+    "category": "Difficult Bible Questions",
+    "title": "Difficult Bible Questions",
+    "keywords": [
+      "difficult",
+      "bible",
+      "questions"
+    ],
+    "short_answer": "Difficult Bible Questions is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about difficult bible questions using references from the Bible.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
+    ],
+    "major_points": [
+      "Biblical teaching about difficult bible questions",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
+    ]
   }
 ]

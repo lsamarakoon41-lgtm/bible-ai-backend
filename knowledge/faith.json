@@ -1,23 +1,21 @@
 [
   {
-    "category": "Christian Life",
+    "category": "Faith",
     "title": "Faith",
     "keywords": [
-      "faith",
-      "believe in god",
-      "trust in god"
+      "faith"
     ],
-    "short_answer": "Faith is trusting in God and believing His promises.",
-    "summary": "Faith involves trusting God, believing His Word, and relying on Jesus Christ for salvation.",
+    "short_answer": "Faith is a biblical topic explained using Scripture.",
+    "summary": "This knowledge entry describes the biblical teaching about faith using references from the Bible.",
     "scripture_references": [
-      "Hebrews 11:1",
-      "Romans 10:17",
-      "Ephesians 2:8"
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1"
     ],
     "major_points": [
-      "Faith trusts God's promises",
-      "Faith comes through hearing God's Word",
-      "Faith is essential for salvation"
+      "Biblical teaching about faith",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture"
     ]
   }
 ]
