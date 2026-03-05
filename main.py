@@ -26,7 +26,7 @@ def clean_text(text):
     return [w for w in words if w not in STOP_WORDS]
 
 # =====================================================
-# LOAD BIBLE (PRE-INDEXED)
+# LOAD BIBLE (FIXED FOR YOUR JSON STRUCTURE)
 # =====================================================
 
 with open("kjv.json", "r", encoding="utf-8") as f:
@@ -35,19 +35,18 @@ with open("kjv.json", "r", encoding="utf-8") as f:
 indexed_verses = []
 bible_word_frequency = Counter()
 
-for book in bible_data:
-    for chapter in book["chapters"]:
-        for verse in chapter:
-            words = clean_text(verse["text"])
+for reference, text in bible_data.items():
 
-            for w in words:
-                bible_word_frequency[w] += 1
+    words = clean_text(text)
 
-            indexed_verses.append({
-                "reference": f'{book["name"]} {verse["chapter"]}:{verse["verse"]}',
-                "text": verse["text"],
-                "words": words
-            })
+    for w in words:
+        bible_word_frequency[w] += 1
+
+    indexed_verses.append({
+        "reference": reference,
+        "text": text,
+        "words": words
+    })
 
 # =====================================================
 # LOAD KNOWLEDGE
@@ -107,7 +106,7 @@ def detect_question_type(question):
     return "general"
 
 # =====================================================
-# TOPIC DETECTION (NEW)
+# TOPIC DETECTION
 # =====================================================
 
 def detect_topic(question_words):
