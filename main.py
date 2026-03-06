@@ -83,7 +83,7 @@ print("Knowledge loaded:", len(KNOWLEDGE))
 
 
 # -------------------------
-# Load Brain Folder
+# Load Brain Folder (WITH SUBFOLDER SUPPORT)
 # -------------------------
 
 BRAIN = []
@@ -92,11 +92,11 @@ brain_folder = "brain"
 
 if os.path.exists(brain_folder):
 
-    for file in os.listdir(brain_folder):
+    for root, dirs, files in os.walk(brain_folder):
 
-        path = os.path.join(brain_folder, file)
+        for file in files:
 
-        if os.path.isfile(path):
+            path = os.path.join(root, file)
 
             try:
 
@@ -119,9 +119,11 @@ if os.path.exists(brain_folder):
 
                         text = f.read()
 
+                        name = file.replace(".txt", "")
+
                         BRAIN.append({
-                            "title": file,
-                            "keywords": file.replace(".txt","").split("_"),
+                            "title": name,
+                            "keywords": name.split("_"),
                             "short_answer": text[:200],
                             "summary": text,
                             "scripture_references": [],
