@@ -83,6 +83,58 @@ print("Knowledge loaded:", len(KNOWLEDGE))
 
 
 # -------------------------
+# Load Brain Folder
+# -------------------------
+
+BRAIN = []
+
+brain_folder = "brain"
+
+if os.path.exists(brain_folder):
+
+    for file in os.listdir(brain_folder):
+
+        path = os.path.join(brain_folder, file)
+
+        if os.path.isfile(path):
+
+            try:
+
+                if file.endswith(".json"):
+
+                    with open(path, "r", encoding="utf-8") as f:
+
+                        data = json.load(f)
+
+                        if isinstance(data, list):
+
+                            for item in data:
+
+                                if isinstance(item, dict):
+                                    BRAIN.append(item)
+
+                elif file.endswith(".txt"):
+
+                    with open(path, "r", encoding="utf-8") as f:
+
+                        text = f.read()
+
+                        BRAIN.append({
+                            "title": file,
+                            "keywords": file.replace(".txt","").split("_"),
+                            "short_answer": text[:200],
+                            "summary": text,
+                            "scripture_references": [],
+                            "major_points": []
+                        })
+
+            except Exception as e:
+                print("Brain load error:", file, e)
+
+print("Brain loaded:", len(BRAIN))
+
+
+# -------------------------
 # Topic Intelligence
 # -------------------------
 
@@ -96,6 +148,90 @@ TOPIC_KEYWORDS = {
     "sin": ["sin", "sinner", "evil", "wicked"]
 
 }
+
+
+# -------------------------
+# Question Understanding
+# -------------------------
+
+def understand_question(question):
+
+    question = question.lower()
+
+    if question.startswith("who is"):
+        return "person"
+
+    if question.startswith("what is"):
+        return "definition"
+
+    if question.startswith("what does"):
+        return "meaning"
+
+    if question.startswith("where"):
+        return "place"
+
+    if question.startswith("why"):
+        return "reason"
+
+    if question.startswith("how"):
+        return "explanation"
+
+    return "general"
+
+
+# -------------------------
+# Auto Summarize
+# -------------------------
+
+def auto_summarize(text):
+
+    if not text:
+        return ""
+
+    sentences = re.split(r'(?<=[.!?]) +', text)
+
+    if len(sentences) <= 3:
+        return text
+
+    summary = " ".join(sentences[:3])
+
+    return summary
+
+
+# -------------------------
+# Smart Knowledge Ranking
+# -------------------------
+
+def smart_knowledge_search(question):
+
+    question = question.lower()
+    words = question.split()
+
+    best_match = None
+    best_score = 0
+
+    combined = KNOWLEDGE + BRAIN
+
+    for item in combined:
+
+        keywords = item.get("keywords", [])
+        score = 0
+
+        for word in words:
+
+            for key in keywords:
+
+                if word in key.lower():
+                    score += 1
+
+        if score > best_score:
+            best_score = score
+            best_match = item
+
+    if best_score >= 2:
+        return best_match
+
+    return None
 
 
 # -------------------------
@@ -224,7 +360,9 @@ def search_knowledge(question):
 
     question = question.lower()
 
-    for item in KNOWLEDGE:
+    combined = KNOWLEDGE + BRAIN
+
+    for item in combined:
 
         keywords = item.get("keywords", [])
 
@@ -257,58 +395,6 @@ def search_bible(question):
 
 
 # -------------------------
-# API : Books
-# -------------------------
-
-@app.route("/books", methods=["GET"])
-def books():
-    return jsonify([b.get("name") for b in BIBLE])
-
-
-# -------------------------
-# API : Chapter Reader
-# -------------------------
-
-@app.route("/chapter", methods=["GET"])
-def chapter():
-
-    book = request.args.get("book")
-    chapter = request.args.get("chapter")
-
-    if not book or not chapter:
-        return jsonify({"error": "book and chapter required"}), 400
-
-    chapter = int(chapter)
-
-    verses = [v for v in BIBLE_VERSES if v["book"].lower() == book.lower() and v["chapter"] == chapter]
-
-    return jsonify(verses)
-
-
-# -------------------------
-# API : Random Verse
-# -------------------------
-
-@app.route("/random-verse", methods=["GET"])
-def random_verse():
-    return jsonify(random.choice(BIBLE_VERSES))
-
-
-# -------------------------
-# API : Stats
-# -------------------------
-
-@app.route("/stats", methods=["GET"])
-def stats():
-
-    return jsonify({
-        "books": len(BIBLE),
-        "verses": len(BIBLE_VERSES),
-        "knowledge_items": len(KNOWLEDGE)
-    })
-
-
-# -------------------------
 # Ask AI
 # -------------------------
 
@@ -321,6 +407,8 @@ def ask():
         return jsonify({"error": "No JSON body"}), 400
 
     question = data.get("question", "")
+
+    question_type = understand_question(question)
 
     if question == "":
         return jsonify({"error": "Empty question"}), 400
@@ -335,6 +423,19 @@ def ask():
     if ref:
         return jsonify({"type": "reference", "verse": ref})
 
+    item = smart_knowledge_search(question)
+
+    if item:
+
+        return jsonify({
+            "type": "knowledge",
+            "title": item.get("title", ""),
+            "short_answer": item.get("short_answer", ""),
+            "summary": auto_summarize(item.get("summary", "")),
+            "scripture_references": item.get("scripture_references", []),
+            "major_points": item.get("major_points", [])
+        })
+
     item = search_knowledge(question)
 
     if item:
@@ -343,7 +444,7 @@ def ask():
             "type": "knowledge",
             "title": item.get("title", ""),
             "short_answer": item.get("short_answer", ""),
-            "summary": item.get("summary", ""),
+            "summary": auto_summarize(item.get("summary", "")),
             "scripture_references": item.get("scripture_references", []),
             "major_points": item.get("major_points", [])
         })
@@ -379,6 +480,7 @@ def home():
     return jsonify({
         "status": "Bible AI running",
         "knowledge_loaded": len(KNOWLEDGE),
+        "brain_loaded": len(BRAIN),
         "bible_loaded": len(BIBLE_VERSES)
     })
 
