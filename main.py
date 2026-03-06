@@ -4,423 +4,390 @@ import os
 import random
 import re
 
-app = Flask(name)
+app = Flask(__name__)
 
--------------------------
-
-Load Bible
-
--------------------------
+# -------------------------
+# Load Bible
+# -------------------------
 
 BIBLE = []
 BIBLE_VERSES = []
 VERSE_INDEX = {}
 
 try:
-with open("kjv.json", "r", encoding="utf-8") as f:
-BIBLE = json.load(f)
+    with open("kjv.json", "r", encoding="utf-8") as f:
+        BIBLE = json.load(f)
 
-for book in BIBLE:  
-    book_name = book.get("name","")  
+    for book in BIBLE:
+        book_name = book.get("name", "")
 
-    for chapter in book.get("chapters",[]):  
+        for chapter in book.get("chapters", []):
 
-        for verse in chapter:  
+            for verse in chapter:
 
-            verse_data = {  
-                "book": book_name,  
-                "chapter": verse.get("chapter"),  
-                "verse": verse.get("verse"),  
-                "text": verse.get("text","")  
-            }  
+                verse_data = {
+                    "book": book_name,
+                    "chapter": verse.get("chapter"),
+                    "verse": verse.get("verse"),
+                    "text": verse.get("text", "")
+                }
 
-            BIBLE_VERSES.append(verse_data)  
+                BIBLE_VERSES.append(verse_data)
 
-            key = f"{book_name.lower()}_{verse.get('chapter')}_{verse.get('verse')}"  
-            VERSE_INDEX[key] = verse_data
+                key = f"{book_name.lower()}_{verse.get('chapter')}_{verse.get('verse')}"
+                VERSE_INDEX[key] = verse_data
 
 except Exception as e:
-print("Bible load error:", e)
+    print("Bible load error:", e)
 
 print("Bible verses loaded:", len(BIBLE_VERSES))
 
--------------------------
 
-Load Knowledge
-
--------------------------
+# -------------------------
+# Load Knowledge
+# -------------------------
 
 KNOWLEDGE = []
 
 try:
-with open("knowledge_index.json","r",encoding="utf-8") as f:
-index = json.load(f)
+    with open("knowledge_index.json", "r", encoding="utf-8") as f:
+        index = json.load(f)
 
-for category in index:  
+    for category in index:
 
-    for file in index[category]:  
+        for file in index[category]:
 
-        path = os.path.join("knowledge",file)  
+            path = os.path.join("knowledge", file)
 
-        if os.path.exists(path):  
+            if os.path.exists(path):
 
-            try:  
-                with open(path,"r",encoding="utf-8") as k:  
+                try:
+                    with open(path, "r", encoding="utf-8") as k:
 
-                    data = json.load(k)  
+                        data = json.load(k)
 
-                    if isinstance(data,list):  
+                        if isinstance(data, list):
 
-                        for item in data:  
+                            for item in data:
 
-                            if isinstance(item,dict):  
+                                if isinstance(item, dict):
+                                    KNOWLEDGE.append(item)
 
-                                KNOWLEDGE.append(item)  
-
-            except Exception as e:  
-                print("Knowledge file error:",file,e)
+                except Exception as e:
+                    print("Knowledge file error:", file, e)
 
 except Exception as e:
-print("Knowledge index error:",e)
+    print("Knowledge index error:", e)
 
-print("Knowledge loaded:",len(KNOWLEDGE))
+print("Knowledge loaded:", len(KNOWLEDGE))
 
--------------------------
 
-Topic Intelligence
-
--------------------------
+# -------------------------
+# Topic Intelligence
+# -------------------------
 
 TOPIC_KEYWORDS = {
 
-"jesus":["jesus","christ","messiah","son of god"],  
-"salvation":["salvation","saved","eternal life","grace","redeem"],  
-"love":["love","charity","loving","compassion"],  
-"faith":["faith","believe","belief","trust god"],  
-"fear":["fear","afraid","anxious","worry"],  
-"sin":["sin","sinner","evil","wicked"]
+    "jesus": ["jesus", "christ", "messiah", "son of god"],
+    "salvation": ["salvation", "saved", "eternal life", "grace", "redeem"],
+    "love": ["love", "charity", "loving", "compassion"],
+    "faith": ["faith", "believe", "belief", "trust god"],
+    "fear": ["fear", "afraid", "anxious", "worry"],
+    "sin": ["sin", "sinner", "evil", "wicked"]
 
 }
 
--------------------------
 
-Bible Reference Detection
-
--------------------------
+# -------------------------
+# Bible Reference Detection
+# -------------------------
 
 def find_reference(question):
 
-pattern = r'([1-3]?\s?[A-Za-z]+)\s(\d+):(\d+)'  
-match = re.search(pattern, question)  
+    pattern = r'([1-3]?\s?[A-Za-z]+)\s(\d+):(\d+)'
+    match = re.search(pattern, question)
 
-if match:  
+    if match:
 
-    book = match.group(1).strip()  
-    chapter = int(match.group(2))  
-    verse = int(match.group(3))  
+        book = match.group(1).strip()
+        chapter = int(match.group(2))
+        verse = int(match.group(3))
 
-    key = f"{book.lower()}_{chapter}_{verse}"  
+        key = f"{book.lower()}_{chapter}_{verse}"
 
-    return VERSE_INDEX.get(key)  
+        return VERSE_INDEX.get(key)
 
-return None
+    return None
 
--------------------------
 
-Verse Range Detection
-
--------------------------
+# -------------------------
+# Verse Range Detection
+# -------------------------
 
 def find_range(question):
 
-pattern = r'([1-3]?\s?[A-Za-z]+)\s(\d+):(\d+)-(\d+)'  
-match = re.search(pattern, question)  
+    pattern = r'([1-3]?\s?[A-Za-z]+)\s(\d+):(\d+)-(\d+)'
+    match = re.search(pattern, question)
 
-if match:  
+    if match:
 
-    book = match.group(1).strip()  
-    chapter = int(match.group(2))  
-    start = int(match.group(3))  
-    end = int(match.group(4))  
+        book = match.group(1).strip()
+        chapter = int(match.group(2))
+        start = int(match.group(3))
+        end = int(match.group(4))
 
-    verses = []  
+        verses = []
 
-    for v in BIBLE_VERSES:  
+        for v in BIBLE_VERSES:
 
-        if v["book"].lower()==book.lower() and v["chapter"]==chapter:  
+            if v["book"].lower() == book.lower() and v["chapter"] == chapter:
 
-            if start <= v["verse"] <= end:  
-                verses.append(v)  
+                if start <= v["verse"] <= end:
+                    verses.append(v)
 
-    return verses  
+        return verses
 
-return None
+    return None
 
--------------------------
 
-Semantic Search
-
--------------------------
+# -------------------------
+# Semantic Search
+# -------------------------
 
 def semantic_search(question):
 
-question = question.lower()  
-detected_topics = []  
+    question = question.lower()
+    detected_topics = []
 
-for topic in TOPIC_KEYWORDS:  
+    for topic in TOPIC_KEYWORDS:
 
-    for word in TOPIC_KEYWORDS[topic]:  
+        for word in TOPIC_KEYWORDS[topic]:
 
-        if word in question:  
-            detected_topics.append(topic)  
-            break  
+            if word in question:
+                detected_topics.append(topic)
+                break
 
-results = []  
+    results = []
 
-if detected_topics:  
+    if detected_topics:
 
-    for verse in BIBLE_VERSES:  
+        for verse in BIBLE_VERSES:
 
-        text = verse["text"].lower()  
+            text = verse["text"].lower()
 
-        for topic in detected_topics:  
+            for topic in detected_topics:
 
-            for keyword in TOPIC_KEYWORDS[topic]:  
+                for keyword in TOPIC_KEYWORDS[topic]:
 
-                if keyword in text:  
-                    results.append(verse)  
-                    break  
+                    if keyword in text:
+                        results.append(verse)
+                        break
 
-        if len(results) >= 5:  
-            break  
+            if len(results) >= 5:
+                break
 
-return results
+    return results
 
--------------------------
 
-Multi Verse Search
-
--------------------------
+# -------------------------
+# Multi Verse Search
+# -------------------------
 
 def multi_verse_search(question):
 
-words = question.lower().split()  
-results = []  
+    words = question.lower().split()
+    results = []
 
-for verse in BIBLE_VERSES:  
+    for verse in BIBLE_VERSES:
 
-    text = verse["text"].lower()  
-    score = 0  
+        text = verse["text"].lower()
+        score = 0
 
-    for word in words:  
+        for word in words:
 
-        if word in text:  
-            score += 1  
+            if word in text:
+                score += 1
 
-    if score >= 2:  
-        results.append((score, verse))  
+        if score >= 2:
+            results.append((score, verse))
 
-results.sort(reverse=True, key=lambda x: x[0])  
+    results.sort(reverse=True, key=lambda x: x[0])
 
-return [r[1] for r in results[:5]]
+    return [r[1] for r in results[:5]]
 
--------------------------
 
-Knowledge Search
-
--------------------------
+# -------------------------
+# Knowledge Search
+# -------------------------
 
 def search_knowledge(question):
 
-question = question.lower()  
+    question = question.lower()
 
-for item in KNOWLEDGE:  
+    for item in KNOWLEDGE:
 
-    keywords = item.get("keywords",[])  
+        keywords = item.get("keywords", [])
 
-    for word in keywords:  
+        for word in keywords:
 
-        if word.lower() in question:  
-            return item  
+            if word.lower() in question:
+                return item
 
-return None
+    return None
 
--------------------------
 
-Basic Bible Search
-
--------------------------
+# -------------------------
+# Basic Bible Search
+# -------------------------
 
 def search_bible(question):
 
-question = question.lower()  
-results = []  
+    question = question.lower()
+    results = []
 
-for verse in BIBLE_VERSES:  
+    for verse in BIBLE_VERSES:
 
-    if question in verse["text"].lower():  
-        results.append(verse)  
+        if question in verse["text"].lower():
+            results.append(verse)
 
-    if len(results) >= 5:  
-        break  
+        if len(results) >= 5:
+            break
 
-return results
+    return results
 
--------------------------
 
-API : Books
-
--------------------------
+# -------------------------
+# API : Books
+# -------------------------
 
 @app.route("/books", methods=["GET"])
 def books():
+    return jsonify([b.get("name") for b in BIBLE])
 
-return jsonify([b.get("name") for b in BIBLE])
 
--------------------------
-
-API : Chapter Reader
-
--------------------------
+# -------------------------
+# API : Chapter Reader
+# -------------------------
 
 @app.route("/chapter", methods=["GET"])
 def chapter():
 
-book = request.args.get("book")  
-chapter = request.args.get("chapter")  
+    book = request.args.get("book")
+    chapter = request.args.get("chapter")
 
-if not book or not chapter:  
-    return jsonify({"error":"book and chapter required"}),400  
+    if not book or not chapter:
+        return jsonify({"error": "book and chapter required"}), 400
 
-chapter = int(chapter)  
+    chapter = int(chapter)
 
-verses = [v for v in BIBLE_VERSES if v["book"].lower()==book.lower() and v["chapter"]==chapter]  
+    verses = [v for v in BIBLE_VERSES if v["book"].lower() == book.lower() and v["chapter"] == chapter]
 
-return jsonify(verses)
+    return jsonify(verses)
 
--------------------------
 
-API : Random Verse
-
--------------------------
+# -------------------------
+# API : Random Verse
+# -------------------------
 
 @app.route("/random-verse", methods=["GET"])
 def random_verse():
+    return jsonify(random.choice(BIBLE_VERSES))
 
-return jsonify(random.choice(BIBLE_VERSES))
 
--------------------------
-
-API : Stats
-
--------------------------
+# -------------------------
+# API : Stats
+# -------------------------
 
 @app.route("/stats", methods=["GET"])
 def stats():
 
-return jsonify({  
-    "books":len(BIBLE),  
-    "verses":len(BIBLE_VERSES),  
-    "knowledge_items":len(KNOWLEDGE)  
-})
+    return jsonify({
+        "books": len(BIBLE),
+        "verses": len(BIBLE_VERSES),
+        "knowledge_items": len(KNOWLEDGE)
+    })
 
--------------------------
 
-Ask AI
-
--------------------------
+# -------------------------
+# Ask AI
+# -------------------------
 
 @app.route("/ask", methods=["POST"])
 def ask():
 
-data = request.get_json()  
+    data = request.get_json()
 
-if not data:  
-    return jsonify({"error":"No JSON body"}),400  
+    if not data:
+        return jsonify({"error": "No JSON body"}), 400
 
-question = data.get("question","")  
+    question = data.get("question", "")
 
-if question == "":  
-    return jsonify({"error":"Empty question"}),400  
+    if question == "":
+        return jsonify({"error": "Empty question"}), 400
 
+    range_result = find_range(question)
 
-# Verse Range  
-range_result = find_range(question)  
+    if range_result:
+        return jsonify({"type": "reference_range", "verses": range_result})
 
-if range_result:  
-    return jsonify({"type":"reference_range","verses":range_result})  
+    ref = find_reference(question)
 
+    if ref:
+        return jsonify({"type": "reference", "verse": ref})
 
-# Verse Reference  
-ref = find_reference(question)  
+    item = search_knowledge(question)
 
-if ref:  
-    return jsonify({"type":"reference","verse":ref})  
+    if item:
 
+        return jsonify({
+            "type": "knowledge",
+            "title": item.get("title", ""),
+            "short_answer": item.get("short_answer", ""),
+            "summary": item.get("summary", ""),
+            "scripture_references": item.get("scripture_references", []),
+            "major_points": item.get("major_points", [])
+        })
 
-# Knowledge  
-item = search_knowledge(question)  
+    verses = semantic_search(question)
 
-if item:  
+    if verses:
+        return jsonify({"type": "bible_semantic", "verses": verses})
 
-    return jsonify({  
-        "type":"knowledge",  
-        "title":item.get("title",""),  
-        "short_answer":item.get("short_answer",""),  
-        "summary":item.get("summary",""),  
-        "scripture_references":item.get("scripture_references",[]),  
-        "major_points":item.get("major_points",[])  
-    })  
+    verses = multi_verse_search(question)
 
+    if verses:
+        return jsonify({"type": "bible_multi", "verses": verses})
 
-# Semantic  
-verses = semantic_search(question)  
+    verses = search_bible(question)
 
-if verses:  
-    return jsonify({"type":"bible_semantic","verses":verses})  
+    if verses:
+        return jsonify({"type": "bible", "verses": verses})
 
-
-# Multi  
-verses = multi_verse_search(question)  
-
-if verses:  
-    return jsonify({"type":"bible_multi","verses":verses})  
-
-
-# Basic  
-verses = search_bible(question)  
-
-if verses:  
-    return jsonify({"type":"bible","verses":verses})  
+    return jsonify({
+        "type": "unknown",
+        "message": "No answer found in Bible or knowledge."
+    })
 
 
-return jsonify({  
-    "type":"unknown",  
-    "message":"No answer found in Bible or knowledge."  
-})
-
--------------------------
-
-Health
-
--------------------------
+# -------------------------
+# Health
+# -------------------------
 
 @app.route("/")
 def home():
 
-return jsonify({  
-    "status":"Bible AI running",  
-    "knowledge_loaded":len(KNOWLEDGE),  
-    "bible_loaded":len(BIBLE_VERSES)  
-})
+    return jsonify({
+        "status": "Bible AI running",
+        "knowledge_loaded": len(KNOWLEDGE),
+        "bible_loaded": len(BIBLE_VERSES)
+    })
 
--------------------------
 
-Railway Start
+# -------------------------
+# Railway Start
+# -------------------------
 
--------------------------
+if __name__ == "__main__":
 
-if name == "main":
-
-port = int(os.environ.get("PORT",8080))  
-app.run(host="0.0.0.0",port=port)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
