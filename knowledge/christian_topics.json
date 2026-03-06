@@ -1,13 +1,13 @@
 [
   {
-    "category": "Christian Topics",
+    "category": "Core",
     "title": "Christian Topics",
     "keywords": [
       "christian",
       "topics"
     ],
     "short_answer": "Christian Topics is a biblical topic explained using Scripture.",
-    "summary": "This knowledge entry describes the biblical teaching about christian topics using references from the Bible.",
+    "summary": "This knowledge entry explains the biblical teaching about christian topics using Bible references.",
     "scripture_references": [
       "John 3:16",
       "Romans 3:23",

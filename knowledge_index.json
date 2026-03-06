@@ -6,82 +6,161 @@
     "trinity_defense_extended.json",
     "sin_human_nature.json",
     "fall_of_humanity.json",
-    "holy_spirit.json"
+    "holy_spirit.json",
+    "grace_doctrine.json",
+    "justification.json",
+    "sanctification.json",
+    "glorification.json",
+    "atonement.json",
+    "covenant_theology.json",
+    "kingdom_of_god.json",
+    "attributes_of_god.json",
+    "names_of_god.json"
   ],
-
   "jesus": [
     "jesus_life.json",
+    "jesus_birth.json",
+    "jesus_ministry.json",
     "jesus_miracles.json",
     "jesus_parables.json",
-    "resurrection_defense.json",
+    "jesus_teachings.json",
+    "jesus_crucifixion.json",
+    "jesus_resurrection.json",
+    "jesus_ascension.json",
     "messianic_prophecies.json",
-    "prophecy_fulfillment.json"
+    "prophecy_fulfillment.json",
+    "resurrection_defense.json",
+    "titles_of_jesus.json"
   ],
-
+  "bible": [
+    "bible_overview_system.json",
+    "bible_books_overview.json",
+    "old_testament_overview.json",
+    "new_testament_overview.json",
+    "bible_timeline.json",
+    "creation_world.json",
+    "ten_commandments.json",
+    "biblical_covenants.json",
+    "biblical_geography.json",
+    "biblical_feasts.json",
+    "biblical_laws.json"
+  ],
+  "old_testament": [
+    "genesis.json",
+    "exodus.json",
+    "leviticus.json",
+    "numbers.json",
+    "deuteronomy.json",
+    "joshua.json",
+    "judges.json",
+    "ruth.json",
+    "samuel_books.json",
+    "kings_books.json",
+    "chronicles_books.json",
+    "ezra_nehemiah.json",
+    "esther.json",
+    "job.json",
+    "psalms.json",
+    "proverbs.json",
+    "ecclesiastes.json",
+    "song_of_solomon.json",
+    "major_prophets.json",
+    "minor_prophets.json"
+  ],
+  "new_testament": [
+    "gospels.json",
+    "acts_of_apostles.json",
+    "pauline_epistles.json",
+    "general_epistles.json",
+    "revelation_book.json"
+  ],
   "apologetics": [
     "apologetics_core.json",
     "gospel_defense_core.json",
     "existence_of_god_arguments.json",
     "problem_of_evil_extended.json",
-    "bible_reliability_extended.json"
+    "bible_reliability_extended.json",
+    "atheism_response.json",
+    "science_and_faith.json",
+    "resurrection_evidence.json",
+    "historical_jesus_evidence.json",
+    "christianity_vs_other_religions.json"
   ],
-
   "christian_living": [
     "faith.json",
     "love.json",
     "forgiveness.json",
     "prayer.json",
     "baptism.json",
-    "christian_living_extended.json"
+    "christian_living_extended.json",
+    "discipleship.json",
+    "repentance.json",
+    "holiness.json",
+    "obedience.json",
+    "humility.json",
+    "spiritual_growth.json",
+    "fasting.json",
+    "worship.json",
+    "spiritual_disciplines.json"
   ],
-
+  "church": [
+    "church_structure.json",
+    "church_leadership.json",
+    "church_history.json",
+    "early_church.json",
+    "early_church_history_extended.json",
+    "church_missions.json",
+    "great_commission.json"
+  ],
   "spiritual_world": [
     "angels_demons.json",
-    "satan.json"
+    "satan.json",
+    "spiritual_warfare.json",
+    "fallen_angels.json",
+    "demonology.json",
+    "angelology.json"
   ],
-
-  "eternity": [
-    "heaven_hell.json",
-    "new_heaven_earth.json"
-  ],
-
   "prophecy": [
     "end_times.json",
     "eschatology_doctrine.json",
     "eschatology_extended.json",
-    "antichrist.json"
+    "antichrist.json",
+    "tribulation.json",
+    "second_coming.json",
+    "millennial_kingdom.json",
+    "final_judgment.json"
   ],
-
+  "eternity": [
+    "heaven_hell.json",
+    "new_heaven_earth.json",
+    "eternal_life.json",
+    "resurrection_of_dead.json"
+  ],
   "history": [
-    "early_church.json",
-    "early_church_history_extended.json",
     "historical_context.json",
-    "historical_evidence.json"
+    "historical_evidence.json",
+    "biblical_archaeology.json",
+    "roman_empire_context.json",
+    "israel_history.json"
   ],
-
-  "bible": [
-    "bible_overview_system.json",
-    "creation_world.json",
-    "ten_commandments.json"
-  ],
-
-  "missions": [
-    "great_commission.json"
-  ],
-
-  "questions": [
-    "common_questions.json",
-    "difficult_bible_questions.json"
-  ],
-
   "reference": [
     "biblical_characters_profiles.json",
+    "bible_genealogies.json",
+    "biblical_places.json",
+    "biblical_symbols.json",
+    "biblical_numbers.json",
     "world_religions_comparison.json"
-
-  "core":[
-  "jesus_teachings.json",
-  "bible_timeline.json",
-  "christian_topics.json",
-  "bible_questions.json"
+  ],
+  "questions": [
+    "common_questions.json",
+    "difficult_bible_questions.json",
+    "atheist_questions.json",
+    "theology_questions.json",
+    "life_questions.json",
+    "suffering_questions.json"
+  ],
+  "core": [
+    "christian_topics.json",
+    "bible_questions.json"
   ]
 }
