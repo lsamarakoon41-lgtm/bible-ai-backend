@@ -1,0 +1,643 @@
+[
+  {
+    "category": "Theology",
+    "title": "God's Mercy",
+    "keywords": [
+      "apostle",
+      "worship",
+      "mercy",
+      "lord",
+      "church",
+      "redemption",
+      "prophet",
+      "bible",
+      "god's",
+      "messiah",
+      "prayer",
+      "grace"
+    ],
+    "short_answer": "God's Mercy is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about god's mercy using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about god's mercy",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "God's Holiness",
+    "keywords": [
+      "heaven",
+      "spirit",
+      "worship",
+      "god",
+      "redemption",
+      "gospel",
+      "scripture",
+      "holiness",
+      "truth",
+      "god's",
+      "messiah",
+      "grace"
+    ],
+    "short_answer": "God's Holiness is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about god's holiness using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about god's holiness",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Church History",
+    "keywords": [
+      "salvation",
+      "spirit",
+      "apostle",
+      "worship",
+      "church",
+      "eternal",
+      "redemption",
+      "gospel",
+      "bible",
+      "history",
+      "prayer"
+    ],
+    "short_answer": "Church History is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about church history using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about church history",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Fall of Man",
+    "keywords": [
+      "man",
+      "kingdom",
+      "apostle",
+      "worship",
+      "lord",
+      "fall",
+      "god",
+      "redemption",
+      "scripture",
+      "bible",
+      "of",
+      "holy",
+      "grace"
+    ],
+    "short_answer": "Fall of Man is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about fall of man using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about fall of man",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "New Heaven and Earth",
+    "keywords": [
+      "heaven",
+      "new",
+      "earth",
+      "salvation",
+      "apostle",
+      "and",
+      "church",
+      "christian",
+      "eternal",
+      "god",
+      "scripture",
+      "prophet",
+      "prayer",
+      "grace"
+    ],
+    "short_answer": "New Heaven and Earth is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about new heaven and earth using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about new heaven and earth",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Crucifixion of Jesus",
+    "keywords": [
+      "heaven",
+      "salvation",
+      "kingdom",
+      "christian",
+      "god",
+      "bible",
+      "jesus",
+      "prophet",
+      "crucifixion",
+      "disciple",
+      "of",
+      "prayer",
+      "grace"
+    ],
+    "short_answer": "Crucifixion of Jesus is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about crucifixion of jesus using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about crucifixion of jesus",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Wisdom",
+    "keywords": [
+      "truth",
+      "apostle",
+      "christian",
+      "wisdom",
+      "eternal",
+      "god",
+      "scripture",
+      "bible",
+      "messiah",
+      "holy",
+      "grace"
+    ],
+    "short_answer": "Wisdom is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about wisdom using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about wisdom",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Hell",
+    "keywords": [
+      "salvation",
+      "kingdom",
+      "lord",
+      "holy",
+      "church",
+      "eternal",
+      "redemption",
+      "scripture",
+      "bible",
+      "hell",
+      "prayer"
+    ],
+    "short_answer": "Hell is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about hell using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about hell",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Faith in God",
+    "keywords": [
+      "in",
+      "truth",
+      "kingdom",
+      "apostle",
+      "worship",
+      "faith",
+      "church",
+      "christian",
+      "god",
+      "scripture",
+      "prophet",
+      "spirit",
+      "messiah"
+    ],
+    "short_answer": "Faith in God is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about faith in god using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about faith in god",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Wisdom",
+    "keywords": [
+      "spirit",
+      "apostle",
+      "lord",
+      "church",
+      "christian",
+      "wisdom",
+      "eternal",
+      "scripture",
+      "prophet",
+      "truth",
+      "disciple"
+    ],
+    "short_answer": "Wisdom is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about wisdom using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about wisdom",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Church History",
+    "keywords": [
+      "kingdom",
+      "truth",
+      "faithful",
+      "church",
+      "christian",
+      "eternal",
+      "redemption",
+      "god",
+      "prophet",
+      "spirit",
+      "history"
+    ],
+    "short_answer": "Church History is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about church history using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about church history",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Christian Living",
+    "keywords": [
+      "salvation",
+      "worship",
+      "faithful",
+      "church",
+      "christian",
+      "eternal",
+      "living",
+      "bible",
+      "prophet",
+      "spirit",
+      "messiah",
+      "grace"
+    ],
+    "short_answer": "Christian Living is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about christian living using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about christian living",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Lord's Supper",
+    "keywords": [
+      "salvation",
+      "spirit",
+      "supper",
+      "worship",
+      "christian",
+      "eternal",
+      "god",
+      "bible",
+      "prophet",
+      "lord's",
+      "truth",
+      "messiah"
+    ],
+    "short_answer": "Lord's Supper is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about lord's supper using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about lord's supper",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Obedience",
+    "keywords": [
+      "kingdom",
+      "lord",
+      "faithful",
+      "eternal",
+      "god",
+      "scripture",
+      "obedience",
+      "bible",
+      "disciple",
+      "messiah",
+      "prayer"
+    ],
+    "short_answer": "Obedience is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about obedience using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about obedience",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Lord's Supper",
+    "keywords": [
+      "spirit",
+      "apostle",
+      "supper",
+      "church",
+      "christian",
+      "eternal",
+      "redemption",
+      "scripture",
+      "lord's",
+      "truth",
+      "messiah",
+      "prayer"
+    ],
+    "short_answer": "Lord's Supper is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about lord's supper using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about lord's supper",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Fear of God",
+    "keywords": [
+      "heaven",
+      "apostle",
+      "lord",
+      "fear",
+      "redemption",
+      "god",
+      "gospel",
+      "prophet",
+      "spirit",
+      "disciple",
+      "of",
+      "holy"
+    ],
+    "short_answer": "Fear of God is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about fear of god using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about fear of god",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Teachings of Jesus",
+    "keywords": [
+      "faithful",
+      "eternal",
+      "god",
+      "teachings",
+      "redemption",
+      "jesus",
+      "prophet",
+      "truth",
+      "disciple",
+      "messiah",
+      "of",
+      "holy",
+      "grace"
+    ],
+    "short_answer": "Teachings of Jesus is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about teachings of jesus using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about teachings of jesus",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Faith in God",
+    "keywords": [
+      "heaven",
+      "in",
+      "kingdom",
+      "salvation",
+      "faith",
+      "church",
+      "christian",
+      "faithful",
+      "eternal",
+      "god",
+      "truth",
+      "messiah",
+      "grace"
+    ],
+    "short_answer": "Faith in God is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about faith in god using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about faith in god",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "Church History",
+    "keywords": [
+      "kingdom",
+      "apostle",
+      "worship",
+      "lord",
+      "church",
+      "eternal",
+      "god",
+      "redemption",
+      "prophet",
+      "bible",
+      "history",
+      "grace"
+    ],
+    "short_answer": "Church History is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about church history using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about church history",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  },
+  {
+    "category": "Theology",
+    "title": "God's Love",
+    "keywords": [
+      "kingdom",
+      "apostle",
+      "love",
+      "faithful",
+      "church",
+      "christian",
+      "redemption",
+      "gospel",
+      "scripture",
+      "prophet",
+      "god's",
+      "messiah"
+    ],
+    "short_answer": "God's Love is explained in the Bible through Scripture and Christian teaching.",
+    "summary": "This entry explains the biblical teaching about god's love using references and Christian doctrine.",
+    "scripture_references": [
+      "John 3:16",
+      "Romans 3:23",
+      "Genesis 1:1",
+      "Ephesians 2:8",
+      "Matthew 28:19"
+    ],
+    "major_points": [
+      "Biblical teaching about god's love",
+      "Important doctrine for Christian understanding",
+      "Supported by Scripture and Christian theology"
+    ]
+  }
+]
